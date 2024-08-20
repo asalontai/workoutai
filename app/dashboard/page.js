@@ -222,7 +222,7 @@ export default function Dashboard() {
                     {msg.role === 'assistant' ? (
                       <Image src={Icon} width={40} height={40} alt='Chatbot Icon' style={{ borderRadius: '100%', marginLeft: 10, marginRight: "-20px", marginTop: 15, border: "2px solid black" }} />
                     ) : (
-                      <Image src={ user.photoURL || defaultProfile } width={40} height={40} alt='Chatbot Icon' style={{ borderRadius: '100%', marginRight: "-20px", marginTop: 9, border: "2px solid black" }} />
+                      <Image src={ user?.photoURL || defaultProfile } width={40} height={40} alt='Chatbot Icon' style={{ borderRadius: '100%', marginRight: "-20px", marginTop: 9, border: "2px solid black" }} />
                     )}
                     <Box
                       bgcolor={
