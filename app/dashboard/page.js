@@ -37,10 +37,10 @@ export default function Dashboard() {
   useEffect(() => {
     if (messages.length === 0) {
       const initialMessage = `
-        <p>Hello!<br>
-        I'm your dedicated fitness coach, here to help you crush your fitness goals.<br>
-        Whether you're looking for workout tips, diet advice, or just some motivation, I'm here to guide you.<br>
-        How can we kickstart your fitness journey today?</p>
+        <p>Hello!</p>
+        <p>I'm your dedicated fitness coach, here to help you crush your fitness goals.</p>
+        <p>Whether you're looking for workout tips, diet advice, or just some motivation,I'm here to guide you.</p>
+        <p>How can we kickstart your fitness journey today?</p>
       `;
       setIsTyping(true);
       typeMessage(initialMessage, 'assistant');
