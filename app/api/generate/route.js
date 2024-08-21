@@ -39,7 +39,6 @@ export async function POST(req) {
     const loader = new PDFLoader(filePath);
 
     const docs = await loader.load();
-    console.log(docs[0]);
 
     const textSplitter = new RecursiveCharacterTextSplitter({
         chunkSize: 500,
@@ -48,14 +47,11 @@ export async function POST(req) {
     });
 
     const splitDocs = await textSplitter.splitDocuments(docs);
-    console.log(splitDocs[30]);
 
     const texts = splitDocs.map((doc, index) => {
         const content = doc.pageContent || "No content available";
         return `Content: ${content}`;
     });
-
-    console.log(texts);
 
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
@@ -93,13 +89,21 @@ export async function POST(req) {
         pdfVectors,
     )
 
-    console.log("Embeddings in Pinecone")
-
     const request = await req.json()
 
-    const data = request[request.length - 1]
+    console.log(request)
 
-    const query = data.content
+    const user = request[request.length - 1]
+
+    const formatHistory = (history) => {
+        return history.map((entry) => {
+            return `${entry.role === 'user' ? 'User:' : 'Assistant:'} ${entry.content.trim()}`;
+        }).join("\n");
+    };
+
+    const history = formatHistory(request)
+
+    const query = user.content
 
     console.log(query)
 
@@ -115,9 +119,9 @@ export async function POST(req) {
         .map((match) => match.metadata.text)
         .join(" ")
 
-    console.log(`Concatenated Text: ${concatenatedText}`)
+    const augmentedQuery = `<CONTEXT>\n${concatenatedText}\n</CONTEXT>\n\nPREVIOUS CONTEXT:\n${history}\n\nMY QUESTION:\n${query}`;
 
-    const augmentedQuery = `<CONTEXT>\n${concatenatedText}\n</CONTEXT>\n\nMY QUESTION:\n${query}`;
+    console.log(augmentedQuery)
 
     const response = await openai.chat.completions.create({
         model: "gpt-4o-mini",
