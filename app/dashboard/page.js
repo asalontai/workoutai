@@ -1,10 +1,8 @@
 "use client"
 
 import React, { useState, useEffect, useRef, } from 'react';
-import { auth } from "@/firebase";
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { marked } from 'marked';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
@@ -13,11 +11,11 @@ import Icon from "../icon.ico"
 import Logo from "../../public/Logo.png"
 import defaultProfile from "../../public/DefaultProfile.jpg"
 import { BouncingDots } from '../components/bouncingDots';
+import { useSession } from 'next-auth/react';
 
 export default function Dashboard() {
-  const [user, loading] = useAuthState(auth);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+  const { data: session } = useSession();
 
   const messagesEndRef = useRef(null);
   const typingTimeoutRef = useRef(null);
@@ -27,12 +25,6 @@ export default function Dashboard() {
   const [messages, setMessages] = useState([])
 
   const [message, setMessage] = useState('');
-
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push("/");
-    }
-  }, [loading, user, router]);
 
   useEffect(() => {
     if (messages.length === 0) {
@@ -222,7 +214,7 @@ export default function Dashboard() {
                     {msg.role === 'assistant' ? (
                       <Image src={Icon} width={40} height={40} alt='Chatbot Icon' style={{ borderRadius: '100%', marginLeft: 10, marginRight: "-20px", marginTop: 15, border: "2px solid black" }} />
                     ) : (
-                      <Image src={ user?.photoURL || defaultProfile } width={40} height={40} alt='Chatbot Icon' style={{ borderRadius: '100%', marginRight: "-20px", marginTop: 9, border: "2px solid black" }} />
+                      <Image src={ session?.user.image || defaultProfile } width={40} height={40} alt='Chatbot Icon' style={{ borderRadius: '100%', marginRight: "-20px", marginTop: 9, border: "2px solid black" }} />
                     )}
                     <Box
                       bgcolor={

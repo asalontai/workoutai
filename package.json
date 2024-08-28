@@ -15,20 +15,27 @@
     "@langchain/pinecone": "^0.0.9",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
+    "@next-auth/prisma-adapter": "^1.0.7",
     "@pinecone-database/pinecone": "^3.0.0",
+    "@prisma/client": "^5.18.0",
+    "bcrypt": "^5.1.1",
     "firebase": "^10.13.0",
     "langchain": "^0.2.16",
     "marked": "^14.0.0",
-    "next": "14.2.5",
+    "next": "^14.2.6",
+    "next-auth": "^4.24.7",
     "openai": "^4.56.0",
     "pdf-parse": "^1.1.1",
     "pdfjs-dist": "^4.5.136",
     "react": "^18",
     "react-dom": "^18",
-    "react-firebase-hooks": "^5.1.1"
+    "react-firebase-hooks": "^5.1.1",
+    "stripe": "^16.8.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "eslint": "^8",
-    "eslint-config-next": "14.2.5"
+    "eslint-config-next": "14.2.5",
+    "prisma": "^5.18.0"
   }
 }

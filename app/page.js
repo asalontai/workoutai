@@ -3,15 +3,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Box, Typography, Container, Button, Grid } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '@/firebase';
 import Image from 'next/image';
 import Footer from './components/Footer'; // Import Footer component
-import NavbarLanding from './components/Navbar';
 import { FitnessCenter, HelpCenter, Restaurant } from '@mui/icons-material';
+import Navbar from './components/Navbar';
 
 export default function LandingPage() {
-  const [user, loading] = useAuthState(auth);
   const router = useRouter();
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollTop, setLastScrollTop] = useState(0);
@@ -22,12 +19,6 @@ export default function LandingPage() {
       secondSectionRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
-  useEffect(() => {
-    if (!loading && user) {
-      router.push("/dashboard");
-    }
-  }, [loading, user, router]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,7 +37,7 @@ export default function LandingPage() {
 
   return (
     <div>
-      <NavbarLanding show={showNavbar} handleFeatures={handleLearnMoreClick} handlePricing={handleLearnMoreClick} />
+      <Navbar show={showNavbar} handleFeatures={handleLearnMoreClick} handlePricing={handleLearnMoreClick} />
       <Box
         sx={{
           position: 'relative',

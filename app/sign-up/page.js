@@ -1,21 +1,19 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { auth, googleProvider } from "@/firebase";
-import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { Box, Button, Divider, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAuthState } from "react-firebase-hooks/auth";
 import WorkoutAI from "@/public/WorkoutAI Logo.png"
 import GoogleIcon from '@/public/google-icon.svg'
 import Image from "next/image";
 import LandingPage from "../../public/Auth Picture.webp";
 import Logo from "../../public/Logo.png"
 import Footer from "../components/Footer";
+import { signIn } from "next-auth/react";
 
 export default function SignUp() {
-    const [user, loading] = useAuthState(auth);
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -24,21 +22,36 @@ export default function SignUp() {
 
     const router = useRouter();
 
-    useEffect(() => {
-        if (!loading && user) {
-          router.push("/dashboard");
-        }
-    }, [loading, user, router]);
-
     const handleSignUp = async () => {
         setError("");
         setProcessing(true);
 
-        if (!email || !password || !confirmPassword) {
+        if (!username || !email || !password || !confirmPassword) {
             setError("All fields are required.");
             setProcessing(false);
             return;
-          }
+        }
+
+        const usernameRegex = /^[a-zA-Z0-9_]{3,}$/;
+        if (!usernameRegex.test(username)) {
+            setError("Username must be at least 3 characters long and contain only letters, numbers, and underscores.");
+            setProcessing(false);
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setError("Please enter a valid email address.");
+            setProcessing(false);
+            return;
+        }
+
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+        if (!passwordRegex.test(password)) {
+            setError("Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.");
+            setProcessing(false);
+            return;
+        }
 
         if (password !== confirmPassword) {
             setError("Passwords do not match");
@@ -47,9 +60,28 @@ export default function SignUp() {
         }
 
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            console.log("User signed up:", email)
-            router.push('/sign-in');
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, username, password }),
+            });
+
+            const data = await response.json();
+
+            if (response.status === 409 || response.status === 500) {
+                setError(data.message);
+                setProcessing(false);
+                return;
+            }
+
+            if (response.ok) {
+                console.log("User signed up:", data.user);
+                router.push('/sign-in');
+            } else {
+                setError(data.message);
+            }
         } catch (error) {
             setError(error.message);
             console.log("Error signing up:", error.message);
@@ -59,20 +91,17 @@ export default function SignUp() {
     };
 
     const handleGoogle = async () => {
-        setError("")
-        setProcessing(true);
-
+        setProcessing(true)
         try {
-            await signInWithPopup(auth, googleProvider);
-            console.log("User signed in with Google");
-            router.push('/dashboard');
-        } catch (error) {
-            setError(error.message)
-            console.log("Error signing in with Google:", error.message);
+          await signIn("google")
+          router.push("/dashboard")
+        } catch (err) {
+          setError(err)
+          setProcessing(false)
         } finally {
-            setProcessing(false);
+          setProcessing(false)
         }
-    }
+    };
 
     return (
         <Box
@@ -130,10 +159,10 @@ export default function SignUp() {
                     Sign Up
                 </Typography>
                 <TextField
-                    label="Email"
+                    label="Username"
                     variant="outlined"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     sx={{
                         marginTop: "15px",
                         width: "400px",
@@ -163,8 +192,43 @@ export default function SignUp() {
                     }}
                 />
                 <TextField
+                    label="Email"
+                    type="email"
+                    variant="outlined"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    sx={{
+                        marginTop: "10px",
+                        width: "400px",
+                        "& .MuiInputLabel-root": {
+                            color: "white",
+                        },
+                        "& .MuiOutlinedInput-root": {
+                            "& fieldset": {
+                                borderColor: "white",
+                            },
+                            "&:hover fieldset": {
+                                borderColor: "white",
+                            },
+                            "&.Mui-focused fieldset": {
+                                borderColor: "white",
+                            },
+                            "& input": {
+                                color: "white",
+                            },
+                        },
+                        "& .MuiInputLabel-outlined": {
+                            color: "008080",
+                            "&.Mui-focused": {
+                                color: "white",
+                            },
+                        },
+                    }}
+                />
+                <TextField
                     label="Password"
                     variant="outlined"
+                    type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     sx={{
@@ -198,6 +262,7 @@ export default function SignUp() {
                 <TextField
                     label="Confirm Password"
                     variant="outlined"
+                    type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     sx={{

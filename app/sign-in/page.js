@@ -1,12 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { auth, googleProvider } from "@/firebase";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { signIn } from 'next-auth/react'
 import { Box, Button, Divider, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAuthState } from "react-firebase-hooks/auth";
 import WorkoutAI from "@/public/WorkoutAI Logo.png"
 import GoogleIcon from "@/public/google-icon.svg";
 import Image from "next/image";
@@ -15,19 +13,12 @@ import LandingPage from "../../public/Auth Picture.webp";
 import Logo from "../../public/Logo.png"
 
 export default function SignIn() {
-  const [user, loading] = useAuthState(auth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [processing, setProcessing] = useState(false);
 
   const router = useRouter();
-
-  useEffect(() => {
-    if (!loading && user) {
-      router.push("/dashboard");
-    }
-  }, [loading, user, router]);
 
   const handleSignIn = async () => {
     setError("");
@@ -39,31 +30,42 @@ export default function SignIn() {
       return;
     }
 
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log("User signed in:", email);
-      router.push("/dashboard");
-    } catch (error) {
-      setError(error.message);
-      console.log("Error signing up:", error.message);
-    } finally {
-      setProcessing(false);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        setError("Please enter a valid email address.");
+        return;
     }
+
+    const signInData = await signIn('credentials', {
+      email: email,
+      password: password,
+      redirect: false
+    })
+
+    console.log(signInData)
+
+    if (signInData.error) {
+      if (signInData.error === 'CredentialsSignin') {
+        setError("Invalid email or password.");
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
+    } else {
+      router.push('/dashboard');
+    }
+
+    setProcessing(false);
   };
 
   const handleGoogle = async () => {
-    setError("");
-    setProcessing(true);
-
+    setProcessing(true)
     try {
-      await signInWithPopup(auth, googleProvider);
-      console.log("User signed in with Google");
-      router.push("/dashboard");
-    } catch (error) {
-      setError(error.message);
-      console.log("Error signing in with Google:", error.message);
+      await signIn("google", { callbackUrl: "http://localhost:3000/dashboard" })
+    } catch (err) {
+      setError(err)
+      setProcessing(false)
     } finally {
-      setProcessing(false);
+      setProcessing(false)
     }
   };
 
