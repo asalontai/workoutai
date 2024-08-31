@@ -7,7 +7,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { useMediaQuery, useTheme } from '@mui/material';
 import Logo from "../../public/Logo.png";
 
-const Navbar = ({ show, handleFeatures, handlePricing }) => {
+const Navbar = ({ transparent, show, handleFeatures, handlePricing }) => {
   const router = useRouter();
   const { data: session } = useSession();
   const theme = useTheme();
@@ -24,7 +24,7 @@ const Navbar = ({ show, handleFeatures, handlePricing }) => {
   return (
     <>
       <AppBar
-        position="fixed"
+        position={transparent ? "relative" : "fixed"}
         sx={{
           backgroundColor: '#2D2D2D',
           boxShadow: 'none', 

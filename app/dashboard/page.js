@@ -157,15 +157,16 @@ export default function Dashboard() {
       flexDirection="column"
       minHeight="100vh"
     >
-      <Navbar show={true} />
+      <Box marginBottom={2} height={"25px"}>
+        <Navbar show={true} transparent={false}/>
+      </Box>
       <Box 
         width={"100vw"}
         display="flex"
         flexDirection={"column"}
         justifyContent={"center"}
         alignItems={"center"}
-        marginTop={isMobile ? 11 : 12}
-        marginBottom={isMobile && -20}
+        marginTop={isMobile ? 0 : 12}
       >
         <Stack
           direction={"column"}
