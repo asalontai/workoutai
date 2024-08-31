@@ -164,13 +164,13 @@ export default function Dashboard() {
         flexDirection={"column"}
         justifyContent={"center"}
         alignItems={"center"}
-        marginTop={isMobile ? 4 : 12}
-        marginBottom={isMobile ? 2 : 0}
+        marginTop={isMobile ? 11 : 12}
+        marginBottom={isMobile && -20}
       >
         <Stack
           direction={"column"}
           width={isMobile ? "100vw" : "1000px"}
-          height={isMobile ? "680px" : "700px"}
+          height={isMobile ? "580px" : "700px"}
           spacing={3}
           mt={5}
           bgcolor={"white"}
@@ -197,7 +197,7 @@ export default function Dashboard() {
             spacing={2}
             flexGrow={1}
             overflow={"auto"}
-            maxHeight={"505px"}
+            maxHeight={isMobile ? "400px" : "505px"}
             sx={{
               '& .message': {
                 marginBottom: '16px',
