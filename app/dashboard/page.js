@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect, useRef, } from 'react';
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { marked } from 'marked';
 import Footer from '../components/Footer';
@@ -25,6 +25,9 @@ export default function Dashboard() {
   const [messages, setMessages] = useState([])
 
   const [message, setMessage] = useState('');
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     if (messages.length === 0) {
@@ -161,30 +164,33 @@ export default function Dashboard() {
         flexDirection={"column"}
         justifyContent={"center"}
         alignItems={"center"}
-        marginTop={12}
+        marginTop={isMobile ? 4 : 12}
+        marginBottom={isMobile ? 2 : 0}
       >
         <Stack
           direction={"column"}
-          width={"1000px"}
-          height={"700px"}
+          width={isMobile ? "100vw" : "1000px"}
+          height={isMobile ? "680px" : "700px"}
           spacing={3}
           mt={5}
           bgcolor={"white"}
           color={"white"}
           borderRadius={"8px 8px 8px 8px"}
+          borderLeft={isMobile && "4px solid #2D2D2D"}
+          borderRight={isMobile && "4px solid #2D2D2D"}
           sx={{
             boxShadow: "0 4px 8px rgba(255, 255, 255, 0.2)"
           }}
         >
           <Box
-            height={"65px"}
+            height={isMobile ? '45px' : "65px"}
             display={"flex"}
             alignItems={"center"}
             justifyContent={"center"}
-            borderRadius={"6px 6px 0 0"}
+            borderRadius={"4px 4px 0 0"}
             bgcolor="#2D2D2D"
           >
-            <Image src={Logo} width={300} alt='' />
+            {!isMobile && <Image src={Logo} width={300} alt='' />}
           </Box>
           <Stack
             direction={"column"}
@@ -212,7 +218,7 @@ export default function Dashboard() {
                     mt={1}
                   >
                     {msg.role === 'assistant' ? (
-                      <Image src={Icon} width={40} height={40} alt='Chatbot Icon' style={{ borderRadius: '100%', marginLeft: 10, marginRight: "-20px", marginTop: 15, border: "2px solid black" }} />
+                      <Image src={Icon} width={40} height={40} alt='Chatbot Icon' style={{ borderRadius: '100%', marginLeft: isMobile ? 4 : 10, marginRight: "-20px", marginTop: 15, border: "2px solid black" }} />
                     ) : (
                       <Image src={ session?.user.image || defaultProfile } width={40} height={40} alt='Chatbot Icon' style={{ borderRadius: '100%', marginRight: "-20px", marginTop: 9, border: "2px solid black" }} />
                     )}

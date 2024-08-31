@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { Box, Button, Divider, TextField, Typography } from "@mui/material";
+import { Box, Button, Divider, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import WorkoutAI from "@/public/WorkoutAI Logo.png"
@@ -19,6 +19,8 @@ export default function SignUp() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
     const [processing, setProcessing] = useState(false);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const router = useRouter();
 
@@ -93,8 +95,7 @@ export default function SignUp() {
     const handleGoogle = async () => {
         setProcessing(true)
         try {
-          await signIn("google")
-          router.push("/dashboard")
+          await signIn("google", { callbackUrl: "/dashboard" })
         } catch (err) {
           setError(err)
           setProcessing(false)
@@ -133,7 +134,7 @@ export default function SignUp() {
             />
             <Box
                 bgcolor={"#212122"}
-                width={"900px"}
+                width={isMobile ? "100vw" : "900px"}
                 height={"100vh"}
                 gap={2}
                 sx={{
@@ -165,7 +166,9 @@ export default function SignUp() {
                     onChange={(e) => setUsername(e.target.value)}
                     sx={{
                         marginTop: "15px",
-                        width: "400px",
+                        marginLeft: isMobile && "16px",
+                        marginRight: isMobile && "16px",
+                        width: isMobile ? 'calc(100% - 32px)' : '400px',
                         "& .MuiInputLabel-root": {
                             color: "white",
                         },
@@ -199,7 +202,9 @@ export default function SignUp() {
                     onChange={(e) => setEmail(e.target.value)}
                     sx={{
                         marginTop: "10px",
-                        width: "400px",
+                        marginLeft: isMobile && "16px",
+                        marginRight: isMobile && "16px",
+                        width: isMobile ? 'calc(100% - 32px)' : '400px',
                         "& .MuiInputLabel-root": {
                             color: "white",
                         },
@@ -233,7 +238,9 @@ export default function SignUp() {
                     onChange={(e) => setPassword(e.target.value)}
                     sx={{
                         marginTop: "10px",
-                        width: "400px",
+                        marginLeft: isMobile && "16px",
+                        marginRight: isMobile && "16px",
+                        width: isMobile ? 'calc(100% - 32px)' : '400px',
                         "& .MuiInputLabel-root": {
                             color: "white",
                         },
@@ -267,7 +274,9 @@ export default function SignUp() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     sx={{
                         marginTop: "10px",
-                        width: "400px",
+                        marginLeft: isMobile && "16px",
+                        marginRight: isMobile && "16px",
+                        width: isMobile ? 'calc(100% - 32px)' : '400px',
                         "& .MuiInputLabel-root": {
                             color: "white",
                         },
@@ -293,7 +302,7 @@ export default function SignUp() {
                         },
                     }}
                 />
-                <Box width={"400px"} marginTop={"20px"} display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
+                <Box marginTop={"20px"} display={"flex"} justifyContent={"space-between"} alignItems={"center"} marginLeft={isMobile && "24px"} marginRight={isMobile && "24px"} width={isMobile ? 'calc(100% - 48px)' : '400px'}>
                     <Link href={"/sign-in"} className="custom-link">
                         Forget Password?
                     </Link>
@@ -314,7 +323,9 @@ export default function SignUp() {
                     sx={{ 
                         marginTop: "5px",
                         marginBottom: "5px",
-                        width: '400px', 
+                        marginLeft: isMobile && "16px",
+                        marginRight: isMobile && "16px",
+                        width: isMobile ? 'calc(100% - 32px)' : '400px',
                         color: "white",
                         borderColor: "white",
                         "&::before, &::after": {
@@ -336,24 +347,26 @@ export default function SignUp() {
                     '&:hover': {
                         bgcolor: "#4B4B4B"
                     },
-                    width: "400px",
+                    marginLeft: isMobile && "16px",
+                    marginRight: isMobile && "16px",
+                    width: isMobile ? 'calc(100% - 32px)' : '400px',
                     marginTop: "5px"
                 }} 
                     variant="contained"
                     onClick={handleGoogle}
                 >
-                    <Box display={"flex"} width={"400px"} justifyContent={"space-between"} alignItems={"center"}>
+                    <Box display={"flex"} width={isMobile ? "100%" : "400px"} justifyContent={"space-between"} alignItems={"center"}>
                         <Image src={GoogleIcon} height={35} width={35} alt="" />
-                        <Typography mr={14}>Sign in with Google</Typography>
+                        <Typography mr={isMobile ? "auto" : 14} ml={isMobile ? "auto" : 0}>Sign in with Google</Typography>
                     </Box>
                 </Button>
-                <Box display={"flex"} alignItems={"center"} gap={1} marginTop={"15px"}>
+                <Box marginLeft={isMobile && "auto"} marginRight={isMobile && "auto"} width={isMobile ? '200px' : '400px'} display={"flex"} alignItems={"center"} gap={1} marginTop={"15px"} flexDirection={isMobile && "column"}>
                     <Typography>Have an account?</Typography>
                     <Link href={"/sign-in"} className="custom-link">
                         Login with account
                     </Link>
                 </Box>
-                <Box width="400px" display={"flex"} justifyContent={"center"} alignItems={"center"} height="24px" marginTop={"10px"}>
+                <Box marginLeft={isMobile && "16px"} marginRight={isMobile && "16px"} width={isMobile ? 'calc(100% - 32px)' : '400px'} display={"flex"} justifyContent={"center"} alignItems={"center"} height="24px" marginTop={"10px"}>
                     {error && (
                         <Typography color="error">
                             {error}

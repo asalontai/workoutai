@@ -1,22 +1,36 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, Typography, Container, Button, Grid } from '@mui/material';
+import { Box, Typography, Container, Button, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Footer from './components/Footer'; // Import Footer component
 import { FitnessCenter, HelpCenter, Restaurant } from '@mui/icons-material';
 import Navbar from './components/Navbar';
-
 export default function LandingPage() {
   const router = useRouter();
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollTop, setLastScrollTop] = useState(0);
-  const secondSectionRef= useRef(null);
+  const featuresSection= useRef(null);
+  const pricingSection= useRef(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleLearnMoreClick = () => {
-    if (secondSectionRef.current) {
-      secondSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (featuresSection.current) {
+      featuresSection.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleFeaturesClick = () => {
+    if (featuresSection.current) {
+      featuresSection.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handlePricingClick = () => {
+    if (pricingSection.current) {
+      pricingSection.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -37,13 +51,19 @@ export default function LandingPage() {
 
   return (
     <div>
-      <Navbar show={showNavbar} handleFeatures={handleLearnMoreClick} handlePricing={handleLearnMoreClick} />
+      <Navbar show={showNavbar} handleFeatures={handleFeaturesClick} handlePricing={handlePricingClick} />
       <Box
         sx={{
           position: 'relative',
           height: '100vh',
           overflow: 'hidden',
           backgroundColor: '#000', 
+          textAlign: {
+           sm: "center" 
+          },
+          width: {
+            sm: "100%"
+          }
         }}
       >
         <Image
@@ -71,18 +91,40 @@ export default function LandingPage() {
             top: 0,
             bottom: 0,
             right: 0,
-            left: 900,
+            left: isMobile ? 0 : 900,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexDirection: "column",
             color: 'white',
             zIndex: 1,
-            textAlign: 'right'
+            textAlign: isMobile ? "center" : 'right',
           }}
         >
-          <Typography variant="h1" sx={{ width: "650px", mb: 1 }}>Empowering Your Fitness Journey, One Step at a Time!</Typography>
-          <Typography variant='h6' sx={{ width: "650px", textAlign: "center", ml: 5, mt: 1 }}>Meet WorkoutAI, your 24/7 personal fitness and diet assistant! Tailored workouts, dietary advice, and healthy choices are just a chat away. Whether you’re aiming for muscle gain, fat loss, or overall wellness, get the guidance you need to achieve your goals sustainably and enjoyably.</Typography>
+          <Typography 
+            variant="h1" 
+            sx={{ 
+              width: isMobile ? "100%" : "650px", 
+              mb: 1, 
+              fontSize: isMobile && "3.2rem"
+            }}
+          >
+            Empowering Your Fitness Journey, One Step at a Time!
+          </Typography>
+          <Typography 
+            variant='h6' 
+            sx={{ 
+              width: isMobile ? "100%" : "650px",
+              textAlign: "center", 
+              ml: isMobile ? 2 : 5,
+              pl: isMobile ? 1 : 0, 
+              pr: isMobile ? 3 : 0, 
+              mt: isMobile ? 2 : 1,
+              fontSize: isMobile && "1.0rem" 
+            }}
+          >
+            Meet WorkoutAI, your 24/7 personal fitness and diet assistant! Tailored workouts, dietary advice, and healthy choices are just a chat away. Whether you’re aiming for muscle gain, fat loss, or overall wellness, get the guidance you need to achieve your goals sustainably and enjoyably.
+          </Typography>
           <Button
             variant='contained'
             size='large'
@@ -95,6 +137,11 @@ export default function LandingPage() {
               mt: 2, 
               '&:hover': {
                 bgcolor: "#4B4B4B"
+              },
+              "@media (max-width: 600px)": {
+                ml: "auto",
+                mr: "auto",
+                mt: 3
               }
             }}
           >
@@ -104,7 +151,7 @@ export default function LandingPage() {
       </Box>
 
       <Box
-        ref={secondSectionRef}
+        ref={featuresSection}
         display={"flex"}
         alignItems={"center"}
         justifyContent={"center"}
@@ -120,8 +167,8 @@ export default function LandingPage() {
           Features
         </Typography>
 
-        <Grid container justifyContent={"center"} spacing={10} mb={5}>
-          <Grid item xs={12} md={3}>
+        <Grid container justifyContent={"center"} spacing={isMobile ? 7 : 10} mb={5}>
+          <Grid item xs={10} md={3}>
             <Box
               sx={{
                 color: "black",
@@ -134,7 +181,10 @@ export default function LandingPage() {
                 boxShadow: "",
                 height: "220px",
                 borderRadius: 3,
-                boxShadow: "3px 3px 5px 1px rgb(255, 255, 255, 0.4)"
+                boxShadow: "3px 3px 5px 1px rgb(255, 255, 255, 0.4)",
+                "@media (max-width: 600px)": {
+                  textAlign: "center"
+                }
               }}
             >
               <Box
@@ -155,7 +205,7 @@ export default function LandingPage() {
               <Typography variant='p' sx={{ marginTop: "5px" }}>- Catalog of many exercises</Typography>
             </Box>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={10} md={3}>
             <Box
               sx={{
                 color: "black",
@@ -168,7 +218,10 @@ export default function LandingPage() {
                 boxShadow: "",
                 height: "220px",
                 borderRadius: 3,
-                boxShadow: "3px 3px 5px 1px rgb(255, 255, 255, 0.4)"
+                boxShadow: "3px 3px 5px 1px rgb(255, 255, 255, 0.4)",
+                "@media (max-width: 600px)": {
+                  textAlign: "center"
+                }
               }}
             >
               <Box
@@ -189,7 +242,7 @@ export default function LandingPage() {
               <Typography variant='p' sx={{ marginTop: "5px" }}>- Caloric intake and macronutrient balance</Typography>
             </Box>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={10} md={3}>
             <Box
               sx={{
                 color: "black",
@@ -202,7 +255,10 @@ export default function LandingPage() {
                 boxShadow: "",
                 height: "220px",
                 borderRadius: 3,
-                boxShadow: "3px 3px 5px 1px rgb(255, 255, 255, 0.4)"
+                boxShadow: "3px 3px 5px 1px rgb(255, 255, 255, 0.4)",
+                "@media (max-width: 600px)": {
+                  textAlign: "center"
+                }
               }}
             >
               <Box
@@ -217,18 +273,25 @@ export default function LandingPage() {
               >
                 <HelpCenter sx={{ width: 45, height: 45}} />
               </Box>
-              <Typography variant='h6' mb={1} fontWeight={"bold"}>24/7 Chatbot Support</Typography>
+              <Typography 
+                variant='h6' 
+                mb={1} 
+                fontWeight={"bold"}
+              >
+                24/7 Chatbot Support
+              </Typography>
               <Typography variant='p' sx={{ marginTop: "5px" }}>- Instant responses to your queries anytime</Typography>
               <Typography variant='p' sx={{ marginTop: "5px" }}>- Personalized guidance for your fitness journey</Typography>
               <Typography variant='p' sx={{ marginTop: "5px" }}>- Comprehensive resources at your fingertips</Typography>
             </Box>
           </Grid>
         </Grid>
+        <div ref={pricingSection}></div>
         <Typography variant="h3" align="center" fontWeight={"bold"} sx={{ mb: 5, paddingBottom: "3px", borderBottom: "2px solid white" }}>
           Pricing
         </Typography>
-        <Grid container justifyContent={"center"} spacing={10}>
-          <Grid item xs={12} md={3}>
+        <Grid container justifyContent={"center"} spacing={isMobile ? 7 : 10}>
+          <Grid item xs={10} md={3}>
             <Box
               sx={{
                 color: "black",
@@ -262,7 +325,7 @@ export default function LandingPage() {
               </Button>
             </Box>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={10} md={3}>
             <Box
               sx={{
                 color: "black",
