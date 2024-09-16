@@ -62,7 +62,7 @@ export default function SignIn() {
   const handleGoogle = async () => {
     setProcessing(true)
     try {
-      await signIn("google", { callbackUrl: "/dashboard" })
+      await signIn("google")
     } catch (err) {
       setError(err)
       setProcessing(false)

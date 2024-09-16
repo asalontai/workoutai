@@ -65,9 +65,17 @@ const Navbar = ({ transparent, show, handleFeatures, handlePricing }) => {
                     onKeyDown={toggleDrawer(false)}
                   >
                     {session ? (
-                      <ListItem sx={{ border: "2px solid white" }} onClick={() => signOut({ redirect: true, callbackUrl: "/" })}>
-                        <ListItemText primary="Sign Out" />
-                      </ListItem>
+                      <>                      
+                        <ListItem sx={{ borderBottom: "1px solid white", borderTop: "1px solid white", textAlign: "center", cursor: "pointer" }} onClick={() => router.push("/dashboard")}>
+                          <ListItemText primary="Dashboard" />
+                        </ListItem>
+                        <ListItem sx={{ borderBottom: "1px solid white", textAlign: "center", cursor: "pointer" }} onClick={() => router.push("/pricing")}>
+                          <ListItemText primary="Pricing" />
+                        </ListItem>
+                        <ListItem sx={{ borderBottom: "1px solid white", textAlign: "center", cursor: "pointer" }} onClick={() => signOut({ redirect: true, callbackUrl: "/" })}>
+                          <ListItemText primary="Sign Out" />
+                        </ListItem>
+                      </>
                     ) : (
                       <>
                         <ListItem sx={{ borderTop: "1px solid white", borderBottom: "1px solid white", textAlign: "center", cursor: "pointer" }} onClick={() => router.push('/')}>
@@ -96,7 +104,11 @@ const Navbar = ({ transparent, show, handleFeatures, handlePricing }) => {
             ) : (
               <>
                 {session ? (
-                  <Button color="inherit" onClick={() => signOut({ redirect: true, callbackUrl: "/" })}>Sign Out</Button>
+                  <>  
+                    <Button color="inherit" onClick={() => router.push("/dashboard")}>Dashboard</Button>
+                    <Button color="inherit" onClick={() => router.push("/pricing")}>Pricing</Button>                
+                    <Button color="inherit" onClick={() => signOut({ redirect: true, callbackUrl: "/" })}>Sign Out</Button>
+                  </>
                 ) : (
                   <>
                     <Button color="inherit" href='/'>Home</Button>

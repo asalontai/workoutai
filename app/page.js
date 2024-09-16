@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Footer from './components/Footer'; // Import Footer component
 import { FitnessCenter, HelpCenter, Restaurant } from '@mui/icons-material';
 import Navbar from './components/Navbar';
+
 export default function LandingPage() {
   const router = useRouter();
   const [showNavbar, setShowNavbar] = useState(true);
@@ -51,7 +52,7 @@ export default function LandingPage() {
 
   return (
     <div>
-      <Navbar show={showNavbar} handleFeatures={handleFeaturesClick} handlePricing={handlePricingClick} />
+      <Navbar transparent={true} show={showNavbar} handleFeatures={handleFeaturesClick} handlePricing={handlePricingClick} />
       <Box
         sx={{
           position: 'relative',
@@ -320,6 +321,7 @@ export default function LandingPage() {
                     bgcolor: "#4B4B4B"
                   } 
                 }}
+                onClick={() => router.push(`/sign-in?callbackUrl=/pricing`)}
               >
                 Choose Basic
               </Button>
@@ -354,6 +356,7 @@ export default function LandingPage() {
                     bgcolor: "#4B4B4B"
                   } 
                 }}
+                onClick={() => router.push(`/sign-in?callbackUrl=/pricing`)}
               >
                 Choose Pro
               </Button>
