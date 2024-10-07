@@ -1,4 +1,6 @@
 import { db } from "@/lib/db";
+import { getServerSession } from "next-auth";
+import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import Stripe from "stripe"
 
@@ -36,6 +38,7 @@ const webhookHandler = async (req) => {
         const subscripton = event.data.object
 
         switch (event.type) {
+            case "customer.subscription.updated":
             case "customer.subscription.created":
                 await db.user.update({
                     where: {

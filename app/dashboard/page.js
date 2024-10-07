@@ -15,7 +15,7 @@ import { useSession } from 'next-auth/react';
 
 export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(false);
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
 
   const messagesEndRef = useRef(null);
   const typingTimeoutRef = useRef(null);
@@ -26,23 +26,18 @@ export default function Dashboard() {
 
   const [message, setMessage] = useState('');
 
+  const [hasInitialMessage, setHasInitialMessage] = useState(false);
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  useEffect(() => {
-    if (messages.length === 0) {
-      const initialMessage = `
-        <p>Hello!</p>
+  const name = session?.user.name || session?.user.username
+  const initialMessage = `
+        <h3>Hello, ${name}!</h3>
         <p>I'm your dedicated fitness coach, here to help you crush your fitness goals.</p>
-        <p>Whether you're looking for workout tips, diet advice, or just some motivation,I'm here to guide you.</p>
+        <p>Whether you're looking for workout tips, diet advice, or just some motivation, I'm here to guide you.</p>
         <p>How can we kickstart your fitness journey today?</p>
-      `;
-      setIsTyping(true);
-      typeMessage(initialMessage, 'assistant');
-    }
-  }, [messages]);
-
-  console.log(messages);
+  `;
 
   useEffect(() => {
     messagesEndRef.current.scrollIntoView({ behavior: "smooth"})
@@ -73,11 +68,17 @@ export default function Dashboard() {
       }
     }
 
-    if (role === 'assistant') {
-      setMessages([{ role, content: '' }]);
-    }
+    update();
+
+    setMessages([{ role, content: '' }]);
     type();
   };
+
+  if (!hasInitialMessage) {
+    update()
+    setHasInitialMessage(true);
+    typeMessage(initialMessage, 'assistant');
+  }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter' && !event.shiftKey) {
@@ -171,7 +172,7 @@ export default function Dashboard() {
         <Stack
           direction={"column"}
           width={isMobile ? "100vw" : "1000px"}
-          height={isMobile ? "580px" : "700px"}
+          height={isMobile ? "580px" : "900px"}
           spacing={3}
           mt={5}
           bgcolor={"white"}
@@ -198,7 +199,7 @@ export default function Dashboard() {
             spacing={2}
             flexGrow={1}
             overflow={"auto"}
-            maxHeight={isMobile ? "400px" : "505px"}
+            maxHeight={isMobile ? "400px" : "700px"}
             sx={{
               '& .message': {
                 marginBottom: '16px',
@@ -218,10 +219,8 @@ export default function Dashboard() {
                     gap={1}
                     mt={1}
                   >
-                    {msg.role === 'assistant' ? (
+                    {msg.role === 'assistant' && (
                       <Image src={Icon} width={40} height={40} alt='Chatbot Icon' style={{ borderRadius: '100%', marginLeft: isMobile ? 4 : 10, marginRight: "-20px", marginTop: 15, border: "2px solid black" }} />
-                    ) : (
-                      <Image src={ session?.user.image || defaultProfile } width={40} height={40} alt='Chatbot Icon' style={{ borderRadius: '100%', marginRight: "-20px", marginTop: 9, border: "2px solid black" }} />
                     )}
                     <Box
                       bgcolor={
@@ -251,10 +250,26 @@ export default function Dashboard() {
                           marginTop: '10px',
                           marginLeft: "10px",
                         },
+                        '& h3': {
+                          marginBottom: '10px',
+                          marginTop: '10px',
+                          marginLeft: "10px",
+                        },
                         '& br': 
                         { 
                           marginTop: "10px", 
                           marginBottom: "10px", 
+                        },
+                        '& img': {
+                          width: "100%",
+                          height: "auto",
+                          maxWidth: "400px",
+                          display: 'block',
+                          ml: "auto",
+                          mr: "auto",
+                          mt: 2,
+                          mb: 2,
+                          bgcolor: "white"
                         },
                         display: 'flex',
                         flexDirection: 'column',
@@ -266,10 +281,13 @@ export default function Dashboard() {
                           <BouncingDots />
                         </Box>
                       ) : (
-                        <Box sx={{ '& br': { marginTop: "10px", marginBottom: "10px" }}} dangerouslySetInnerHTML={{ __html: msg.content }} />
+                        <Box dangerouslySetInnerHTML={{ __html: msg.content }} />
                       )}
                     </Box>
                   </Box>
+                  {msg.role === 'user' && (
+                      <Image src={ session?.user.image || defaultProfile } width={40} height={40} alt='Chatbot Icon' style={{ borderRadius: '100%', marginLeft: "-14px", marginTop: 15, marginRight: isMobile ? 4 : 10, border: "2px solid black" }} />
+                  )}
                 </Box>
               ))
             }
