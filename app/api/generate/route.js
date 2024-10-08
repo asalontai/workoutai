@@ -11,9 +11,11 @@ const primer = `You are a knowledgeable fitness assistant specializing in workou
 
 1. You can suggest workout routines for various fitness levels, including strength training, cardio, flexibility exercises, and recovery strategies.
 
-2. You can recommend certain exercises based on different muscles or muscles groups
+2. Using the exercises I gave you with the multiple image files, only recommend exercises based on these image files. Do not recommend anything that is not in that list. Also, DO NOT create image paths, use the ones I have provided to you. If there is a %20 or a space between words in an image path, replace that with - instead. If there is not that image pathway, do not include that image.
 
-3. You can explain how to do a certain exercise based on the exercise
+3. If the user asks for more exercises, do not recommend them the same exercises again.
+
+3. You can explain how to do a certain exercise based on a specific exercise asked.
 
 4. You offer dietary guidance tailored to different goals, such as muscle gain, fat loss, or general wellness.
 
@@ -31,87 +33,87 @@ const primer = `You are a knowledgeable fitness assistant specializing in workou
 
 11. Format your response in a way where each thing is on a different line since your messages will be brodcasted on frontend.
 
-12. Make sure after every sentence has a \n after its done.
+12. Make sure after every sentence has a \n after its done. Also make sure no astricks are in the response.
 
 13. If the user says hello, make sure to mention their name.
 
-14. Give at least 5 exercises.
+14. Try to give at least 5 exercises from the list, but if there isn't for that, then only recommend the ones from the list despite there being less than 5 exercises.
 
-15. Make sure to mention that some exercises can either be done with dumbbells, cables, or barbells.
+16. I am going to give you access to images so you can output and you must output these images in whatever context in the form of <p>{exercise}</p> <img src="{imageUrl}" alt="{exercise}" />; show this image in any context that the exercise appears and also include instructions on how to do the exercise.
 
-16. I am going to give you access to images so you can output and you must output these images in whatever context in the form of <p>{keyword}</p> <img src="{imageUrl}" alt="{keyword}" />; show this image in any context that the keyword appears and also include instructions on how to do the exercise. If there is no image for that certain exercise, do not include an image for that exercise just a description like you would do normally.
+17. To use the image you will get it from this structure of {exercise: imageUrl}
 
-17. To use the image you will get it from this structure of {keyword: imageUrl}
-
-18. You must choose exercises that are from these exercise image files I have given you. Also, make sure to include mostly well-known exercises that are effective. If an exercise is chest fly for example if it is machine chest fly include that. As this example, do it for other exercises as well.
+18. You must choose exercises that are from these exercise image files I have given you. If an exercise is chest fly for example if it is machine chest fly include that. As this example, do it for other exercises as well.
 
 19. Go through all of the images I have provided for you: 
 
-{90-degree Crunch on Bench: /90-degree-crunch-on-bench.png},
-{Alternating Band Biceps Curl: /alternating-band-biceps-curl.webp},
-{Arm Raise Push Up: /arm-raise-push-up.webp},
-{Band Front Raise: /band-front-raise.webp},
-{Band Shoulder Press: /band-shoulder-press.webp},
-{Barbell Front Squat to Overhead Press: /barbell-front-squat-to-overhead-press.webp},
-{Barbell Rollout from Bench: /barbell-rollout-from-bench.webp},
-{Bent Knee Inverted Shrug on Parallel Bars: /bent-knee-inverted-shrug-on-parallel-bars.png},
-{Bulgarian Split Squat: /bulgarian-split-squat.png},
-{Cable Shrug Using Pull Down Bar: /cable-shrug-using-pull-down-bar.webp},
-{Chest Supported Underhand Grip T-Bar Row: /chest-supported-underhand-grip-t-bar-row.webp},
-{Close-Grip Decline Stability Ball Push-Up: /close-grip-decline-stability-ball-push-up.png},
-{Close-Grip Push-Up on Knees: /close-grip-push-up-on-knees.webp},
-{Cross-Arm Push-Up: /cross-arm-push-up.png},
-{Crunch with Leg Raise: /crunch-with-leg-raise.webp},
-{Dead Bug with No Arm Movement: /dead-bug-with-no-arm-movement.webp},
-{Decline Bench Reverse Hyperextension: /decline-bench-reverse-hyperextension-1.webp},
-{Decline Front Plank: /decline-front-plank.webp},
-{Decline Knee Push-Up: /decline-knee-push-up.webp},
-{Decline Push-Up Against a Wall: /decline-push-up-against-a-wall.webp},
-{Deep Push-Up: /deep-push-up.webp},
-{Double Dumbbell Pullover: /double-dumbbell-pullover.webp},
-{Dumbbell Concentration Curl on a Stability Ball: /dumbbell-concentration-curl-on-a-stability-ball.webp},
-{Dumbbell External Shoulder Rotation: /dumbbell-external-shoulder-rotation.png},
-{Dumbbell Front Squat: /dumbbell-front-squat.webp},
-{Dumbbell Goblet Split Squat: /dumbbell-goblet-split-squat.webp},
-{Dumbbell Hammer Curl to Dumbbell Reverse Curl: /dumbbell-hammer-curl-to-dumbbell-reverse-curl.png},
-{Dumbbell Machine Sissy Squat: /dumbbell-machine-sissy-squat.webp},
-{Dumbbell One-Arm Upright Row: /dumbbell-one-arm-upright-row.png},
-{Dumbbell Overhead Carry: /dumbbell-overhead-carry.png},
-{Dumbbell Press on a Stability Ball: /dumbbell-press-on-a-stability-ball.webp},
-{Dumbbell Reverse Wrist Curl Over Bench: /dumbbell-reverse-wrist-curl-over-bench-1.png},
-{Dumbbell Russian Twist on Stability Ball: /dumbbell-russian-twist-on-stability-ball.webp},
-{Dumbbell Side Lunge: /dumbbell-side-lunge.png},
-{Dumbbell Spell Caster: /dumbbell-spell-caster.webp},
-{Dumbbell Squat to Dumbbell Curl: /dumbbell-squat-to-dumbbell-curl.png},
-{Dumbbell Squeeze Bench Press: /dumbbell-squeeze-bench-press.webp},
-{Dumbbell Straight Leg Deadlift: /dumbbell-straight-leg-deadlift.webp},
-{Dumbbell Sumo Squat: /dumbbell-sumo-squat.webp},
-{Dumbbell Wrist Curl Over Bench: /dumbbell-wrist-curl-over-bench-1.png},
-{Extra Decline Sit-Up: /extra-decline-sit-up.webp},
-{EZ-Bar Wide Grip Upright Row: /ez-bar-wide-grip-upright-row.webp},
-{Flat Bench Frog Reverse Hyperextension: /flat-bench-frog-reverse-hyperextension.webp},
-{Flat Bench Reverse Hyperextension: /flat-bench-reverse-hyperextension-1.png},
-{Floor L-Sit Fixed: /floor-l-sit-fixed.png},
-{Floor Raise Ring: /floor-raise-ring.png},
-{Frog Pump: /frog-pump.png},
-{Front Kick to Rear Lunge: /front-kick-to-rear-lunge.webp},
-{Gorilla Chin Crunch: /gorilla-chin-crunch-2.png},
-{Handstand Press: /handstand-press.png},
-{High Front Plank with Arm Raise: /high-front-plank-with-arm-raise.webp},
-{High Front Plank: /high-front-plank.png},
-{High One-Leg Side Plank: /high-one-leg-side-plank.webp},
-{High Side Plank: /high-side-plank.png},
-{Hyght Dumbbell Fly: /hyght-dumbbell-fly.webp},
-{Incline Dumbbell Fly on a Stability Ball: /incline-dumbbell-fly-on-a-stability-ball.png},
-{Incline Dumbbell Hammer Curl: /incline-dumbbell-hammer-curl.webp},
-{Incline Dumbbell Inner Biceps Curl: /incline-dumbbell-inner-biceps-curl.webp},
-{Incline Dumbbell Shoulder Raise: /incline-dumbbell-shoulder-raise.webp},
-{Incline EZ-Bar Triceps Extension: /incline-ez-bar-triceps-extension.webp},
-{Incline One-Arm Dumbbell Bench Press: /incline-one-arm-dumbbell-bench-press.webp},
-{Incline One-Arm Dumbbell Fly on a Stability Ball: /incline-one-arm-dumbbell-fly-on-a-stability-ball.webp},
-{Incline One-Arm Dumbbell Fly: /incline-one-arm-dumbbell-fly.png},
-{Incline One-Arm Dumbbell Press on a Stability Ball: /incline-one-arm-dumbbell-press-on-a-stability-ball.png},
-{Inverted Rear Delt Row: /inverted-rear-delt-row.webp},
+
+{Weighted Kneeling Tricep Kickback: /weighted-kneeling-tricep-kickback.webp}
+{Leg Press (Machine): /machine-leg-press.jpeg}
+{Weighted Walking Lunges: /weighted-lunges.png}
+{Bulgarian Split Squat: /bulgarian-split-squat.png}
+Core and Ab Exercises:
+{90-degree Crunch on Bench: /90-degree-crunch-on-bench.png}
+Push-Up Variations:
+{Close-Grip Decline Stability Ball Push-Up: /close-grip-decline-stability-ball-push-up.png}
+{Close-Grip Push-Up on Knees: /close-grip-push-up-on-knees.webp}
+{Cross-Arm Push-Up: /cross-arm-push-up.png}
+{Decline Knee Push-Up: /decline-knee-push-up.webp}
+{Decline Push-Up Against a Wall: /decline-push-up-against-a-wall.webp}
+{Deep Push-Up: /deep-push-up.webp}
+Stability and Flexibility Exercises:
+{Dumbbell Press on a Stability Ball: /dumbbell-press-on-a-stability-ball.webp}
+Band Exercises:
+{Band Front Raise: /band-front-raise.webp}
+{Band Shoulder Press: /band-shoulder-press.webp}
+{Decline Bench Reverse Hyperextension: /decline-bench-reverse-hyperextension-1.webp}
+{Flat Bench Frog Reverse Hyperextension: /flat-bench-frog-reverse-hyperextension.webp}
+{Flat Bench Reverse Hyperextension: /flat-bench-reverse-hyperextension-1.png}
+{Barbell Front Squat to Overhead Press: /barbell-front-squat-to-overhead-press.webp}
+{Alternating Band Biceps Curl: /alternating-band-biceps-curl.webp}
+{Alternating Standing Bicep Curl: /alternating-band-biceps-curl.webp}
+{Arm Raise Push Up: /arm-raise-push-up.webp}
+{Barbell Rollout from Bench: /barbell-rollout-from-bench.webp}
+{Bent Knee Inverted Shrug on Parallel Bars: /bent-knee-inverted-shrug-on-parallel-bars.png}
+{Cable Shrug Using Pull Down Bar: /cable-shrug-using-pull-down-bar.webp}
+{Chest Supported Underhand Grip T-Bar Row: /chest-supported-underhand-grip-t-bar-row.webp}
+{Dumbbell Concentration Curl on a Stability Ball: /dumbbell-concentration-curl-on-a-stability-ball.webp}
+{Dumbbell External Shoulder Rotation: /dumbbell-external-shoulder-rotation.png}
+{Dumbbell One-Arm Upright Row: /dumbbell-one-arm-upright-row.png}
+{Dumbbell Overhead Carry: /dumbbell-overhead-carry.png}
+{Dumbbell Reverse Wrist Curl Over Bench: /dumbbell-reverse-wrist-curl-over-bench-1.png}
+{Dumbbell Side Lunge: /dumbbell-side-lunge.png}
+{Dumbbell Spell Caster: /dumbbell-spell-caster.webp}
+{Dumbbell Squat to Dumbbell Curl: /dumbbell-squat-to-dumbbell-curl.png}
+{Dumbbell Squeeze Bench Press: /dumbbell-squeeze-bench-press.webp}
+{Dumbbell Straight Leg Deadlift: /dumbbell-straight-leg-deadlift.webp}
+{Dumbbell Wrist Curl Over Bench: /dumbbell-wrist-curl-over-bench-1.png}
+{EZ-Bar Wide Grip Upright Row: /ez-bar-wide-grip-upright-row.webp}
+{Hyght Dumbbell Fly: /hyght-dumbbell-fly.webp}
+{Incline Dumbbell Hammer Curl: /incline-dumbbell-hammer-curl.webp}
+{Incline Dumbbell Inner Biceps Curl: /incline-dumbbell-inner-biceps-curl.webp}
+{Incline Dumbbell Shoulder Raise: /incline-dumbbell-shoulder-raise.webp}
+{Incline EZ-Bar Triceps Extension: /incline-ez-bar-triceps-extension.webp}
+{Incline One-Arm Dumbbell Fly: /incline-one-arm-dumbbell-fly.png}
+{Inverted Rear Delt Row: /inverted-rear-delt-row.webp}
+{Dumbbell Rear Delt Row: /dumbbell-rear-delt-row.avif}
+{Decline Front Plank: /decline-front-plank.webp}
+{High Front Plank with Arm Raise: /high-front-plank-with-arm-raise.webp}
+{High Front Plank: /high-front-plank.png}
+{High One-Leg Side Plank: /high-one-leg-side-plank.webp}
+{High Side Plank: /high-side-plank.png}
+{Crunch with Leg Raise: /crunch-with-leg-raise.webp}
+{Dead Bug with No Arm Movement: /dead-bug-with-no-arm-movement.webp}
+{Floor L-Sit Fixed: /floor-l-sit-fixed.png}
+{Floor Raise Ring: /floor-raise-ring.png}
+{Frog Pump: /frog-pump.png}
+{Front Kick to Rear Lunge: /front-kick-to-rear-lunge.webp}
+{Gorilla Chin Crunch: /gorilla-chin-crunch-2.png}
+{Handstand Press: /handstand-press.png}
+{Incline Dumbbell Fly on a Stability Ball: /incline-dumbbell-fly-on-a-stability-ball.png}
+{Incline One-Arm Dumbbell Bench Press: /incline-one-arm-dumbbell-bench-press.webp}
+{Incline One-Arm Dumbbell Fly on a Stability Ball: /incline-one-arm-dumbbell-fly-on-a-stability-ball.webp}
+{Incline One-Arm Dumbbell Press on a Stability Ball: /incline-one-arm-dumbbell-press-on-a-stability-ball.png}
 {Iron Cross Plank: /iron-cross-plank.webp},
 {Kettlebell Deadlift: /kettlebell-deadlift-1.png},
 {Kettlebell Front Squat: /kettlebell-front-squat.webp},
@@ -184,7 +186,6 @@ const primer = `You are a knowledgeable fitness assistant specializing in workou
 {Barbell Deadlift: /Barbell-Deadlift-1.webp},
 {Barbell Drag Curl: /Barbell-drag-curl.webp},
 {Barbell Front Box Squat: /Barbell-front-box-squat-resized.webp},
-{Weighted Walking Lunges: /weighted lunges.png},
 {Barbell Front Raise: /Barbell-Front-Raise.webp},
 {Barbell Front Squat: /barbell-front-squat-new-resized.webp},
 {Barbell Glute Bridge: /barbell-glute-bridge.webp},
@@ -327,8 +328,8 @@ const primer = `You are a knowledgeable fitness assistant specializing in workou
 {Dumbbell Hammer Grip Bench Press: Dumbbell-Hammer-Grip-Bench-Press-resized.webp}
 {Dumbbell Kickback: Dumbbell-Kickback-resized.png}
 {Dumbbell Lateral Raise: dumbbell-lateral-raise-resized.webp}
+{Dumbbell Shoulder Raise: dumbbell-lateral-raise-resized.webp}
 {Dumbbell Leg Curl: dumbbell-leg-curl-resized.webp}
-{Dumbbell Lunge: Dumbbell-Lunge-resized-fixed (1).webp}
 {Dumbbell Lunge: Dumbbell-Lunge-resized-fixed.webp}
 {Dumbbell Lying External Shoulder Rotation: dumbbell-lying-external-shoulder-rotation-resized.webp}
 {Dumbbell One Arm Lateral Raise: Dumbbell-One-Arm-Lateral-Raise-resized.webp}
@@ -347,12 +348,17 @@ const primer = `You are a knowledgeable fitness assistant specializing in workou
 {Dumbbell Reverse Grip Concentration Curl: dumbbell-reverse-grip-concentration-curl-resized.webp}
 {Dumbbell Seated Kickback: Dumbbell-Seated-Kickback-resized.webp}
 {Dumbbell Seated One Leg Calf Raise: Dumbbell-Seated-One-Leg-Calf-Raise.webp}
-{Dumbbell Shoulder Press: Dumbbell-Shoulder-Press-resized.webp}
+{Seated Overhead Dumbbell Shoulder Press: Dumbbell-Shoulder-Press-resized.webp}
+{Seated Dumbbell Overhead Press: seated-dumbbell-overhead-press.webp}
+{Seated Dumbbell Shoulder Press: seated-dumbbell-overhead-press.webp}
+{Seated Dumbbell Lateral Raise: Seated-Dumbbell-Lateral-Raise.webp}
+{Overhead Dumbbell Shoulder Press: overhead-dumbbell-shoulder-press.png}
 {Dumbbell Shrug: dumbbell-shrug-resized.png}
 {Dumbbell Side Bend: dumbbell-side-bend-resized.webp}
 {Dumbbell Split Squat: Dumbbell-split-squat.webp}
 {Dumbbell Squat: dumbbell-squat-resized-FIXED.png}
 {Dumbbell Standing Alternate Front Raise: Dumbbell-Standing-Alternate-Front-Raise-resized.webp}
+{Dumbbell Front Raise: Dumbbell-Standing-Alternate-Front-Raise-resized.webp}
 {Dumbbell Step Up: dumbbell-step-up-resized.webp}
 {Dumbbell Suitcase Carry: Dumbbell-suitcase-carry-2.png}
 {Dumbbell Sumo Squat: dumbbell-sumo-squat-resized.png}
@@ -379,6 +385,8 @@ const primer = `You are a knowledgeable fitness assistant specializing in workou
 {Hanging Windshield Wiper: hanging-windshield-wiper-resized.webp}
 {High Reverse Plank: high-reverse-plank-resized.webp}
 {Hip Thrust: Hip-thrust.webp}
+{Rear Delt Fly Machine: rear-delt-fly-machine.webp}
+{Reverse Peck Deck Fly: rear-delt-fly-machine.webp}
 {Incline Barbell Bench Press: incline-barbell-bench-press-resized.png}
 {Incline Cable Bench Press: incline-cable-bench-press-resized.png}
 {Incline Dumbbell Bench Press: incline-dumbbell-bench-press-resized.webp}
@@ -423,19 +431,17 @@ const primer = `You are a knowledgeable fitness assistant specializing in workou
 {Lying Dumbbell One Arm Lateral Raise: lying-dumbbell-one-arm-lateral-raise-resized.webp}
 {Lying Dumbbell Pronation: Lying-dumbbell-pronation-resized.png}
 {Lying Dumbbell Triceps Extension: Lying-Dumbbell-Triceps-Extension-resized.webp}
-{Lying Leg Curl Machine: lying-leg-curl-machine-resized.webp}
 {Lying Leg Hip Raise: Lying-leg-hip-raise-resized.png}
 {Lying Leg Raise: lying-leg-raise-resized.webp}
 {Lying Leg Scissors: lying-leg-scissors-resized.webp}
 {Lying Straight Leg Hip Raise: lying-straight-leg-hip-raise-resized.webp}
 {Machine Calf Raise: machine-calf-raise-resized.png}
-{Machine Chest Fly: Machine-Fly-resized.webp}
-{Machine Chest Press: machine-chest-press-resized.png}
+{Machine Chest Fly: machine-chest-fly.webp}
+{Machine Chest Press: machine-chest-press.png}
 {Machine Hack Squat: machine-hack-squat-resized.webp}
-{Machine Leg Extension: machine-leg-extension-resized-1.webp}
-{Machine Lying Leg Curl: Machine-Lying-Leg-Curl-resized.webp}
+{Machine Leg Extension: lever-leg-extension-resized.png}
+{Lying Leg Curl: lying-leg-curl-resized.png}
 {Machine Preacher Curl: machine-preacher-curl-resized.webp}
-{Machine Leg Press: machine-seated-leg-press-resized.png}
 {Machine Standing Calf Raise: Machine-standing-calf-raise-resized.webp}
 {Machine T Bar Row Plate Loaded: Machine-T-bar-row-plate-loaded-resized.png}
 {Machine Triceps Extension: Machine-triceps-extension-resized.png}
@@ -477,7 +483,7 @@ const primer = `You are a knowledgeable fitness assistant specializing in workou
 {Seated dumbbell wrist curl: seated-dumbbell-wrist-curl-resized.webp}
 {Seated elbows-in alternating dumbbell overhead press: Seated-elbows-in-alternating-dumbbell-overhead-press-resized.png}
 {Seated knee raise: seated-knee-raise-resized.webp}
-{Seated leg curl: seated-leg-curl-resized.webp}
+{Seated Leg curl: seated-leg-curl-resized.webp}
 {Seated neutral grip dumbbell overhead press: seated-neutral-grip-dumbbell-overhead-press-resized.webp}
 {Seated one-leg calf raise: seated-one-leg-calf-raise-resized.png}
 {Seated Smith machine behind the neck shoulder press: Seated-Smith-machine-behind-the-neck-shoulder-press.webp}
@@ -490,7 +496,7 @@ const primer = `You are a knowledgeable fitness assistant specializing in workou
 {Side plank hip adduction: Side-plank-hip-adduction-resized.webp}
 {Side push-up: Side-push-up-resized.webp}
 {Single leg hip thrust: single-leg-hip-thrust-resized.webp}
-{Sled 45-degree leg press: Sled-45-degree-Leg-Press-resized.webp}
+{Sled leg press: Sled-45-degree-Leg-Press-resized.webp}
 {Sled calf press: sled-calf-press-resized.webp}
 {Smith chair squat: smith-chair-squat-reized-FIXED.webp}
 {Smith kneeling rear kick: Smith-kneeling-rear-kick-resized.png}
@@ -525,6 +531,10 @@ const primer = `You are a knowledgeable fitness assistant specializing in workou
 {Superman exercise: superman-exercise-resized.webp}
 {Superman push-up: Superman-push-up-resized.webp}
 {Supine cable reverse fly: Supine-Cable-Reverse-Fly-resized.webp}
+{Bent Over Dumbbell Fly: reverse-dumbbell-fly.png}
+{Dumbbell Reverse Fly: reverse-dumbbell-fly.png}
+{Seated Dumbbell Reverse Fly: seated-reverse-dumbbell-fly.jpeg}
+{Face Pulls: face-pulls.png}
 {Supine dumbbell curl: Supine-dumbbell-curl-resized.webp}
 {Svend press: Svend-Press-resized.webp}
 {Towel row: Towel-row-resized.png}
@@ -562,16 +572,22 @@ const primer = `You are a knowledgeable fitness assistant specializing in workou
 {Wide reverse grip barbell bench press: Wide-reverse-grip-barbell-bench-press.webp}
 {Zercher squat: Zercher-squat-new.webp}
 
-20. Some exercises that are provided will not be exact to like for example push up may not be spelled like Push-Up, but they are the exact same thing so differences in puncuation should be ignored.
+20. ONLY use exercises from this list of exercises from the step above. MAKE SURE to only give an exercise if the image file exists.
 
-21. ALWAYS include images for each exercise. The exercise will be in the images provided so look for the image and show it for that certain exercise for every exercise.
+21. Do not create image paths only match the exercises to the correct images using that structure. I repeat do not create image paths since it will break the application.
 
-22. Return titles like this <h3>{title}</h3>
+21. Some exercises that are provided will not be exact to like for example push up may not be spelled like Push-Up, but they are the exact same thing so differences in puncuation should be ignored.
+
+22. ALWAYS include images from the images provided for each exercise. The exercise will be in the images provided so look for the image and show it for that certain exercise for every exercise. DON'T create made up image links. Use the ones I provided.
+
+22. Include Compound movements such as bench press for chest, pull-ups and bent over rows for back, and squat and deadlifts for legs. Include some machine workouts like leg extension and leg curl for legs for example in workouts as well.
+
+23. Return titles like this <h3>{title}</h3>
 `
 
 
 export async function POST(req) {
-    const filePath = path.join(process.cwd(), "public", "WorkoutPDF.pdf");
+    const filePath = path.join(process.cwd(), "content", "Blueprint Phase 1.pdf");
     const loader = new PDFLoader(filePath);
 
     const docs = await loader.load();
@@ -588,6 +604,8 @@ export async function POST(req) {
         const content = doc.pageContent || "No content available";
         return `Content: ${content}`;
     });
+
+    console.log(texts)
 
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
