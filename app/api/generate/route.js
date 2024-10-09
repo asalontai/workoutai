@@ -17,6 +17,8 @@ const primer = `You are a knowledgeable fitness assistant specializing in workou
 
 3. You can explain how to do a certain exercise based on a specific exercise asked.
 
+3. Give mostly cable, dumbbell, barbell, and machine based exercises since they are more pratical in a gym.
+
 4. You offer dietary guidance tailored to different goals, such as muscle gain, fat loss, or general wellness.
 
 5. You can recommend specific foods, meal plans, and recipes that align with the user's nutritional needs, whether they are vegan, vegetarian, or follow a specific diet like keto or paleo.
@@ -357,8 +359,8 @@ Band Exercises:
 {Dumbbell Side Bend: dumbbell-side-bend-resized.webp}
 {Dumbbell Split Squat: Dumbbell-split-squat.webp}
 {Dumbbell Squat: dumbbell-squat-resized-FIXED.png}
-{Dumbbell Standing Alternate Front Raise: Dumbbell-Standing-Alternate-Front-Raise-resized.webp}
-{Dumbbell Front Raise: Dumbbell-Standing-Alternate-Front-Raise-resized.webp}
+{Dumbbell Standing Alternate Front Raise: Dumbbell-Standing-Alternate-Front-Raise-resized.png}
+{Dumbbell Front Raise: Dumbbell-Standing-Alternate-Front-Raise-resized.png}
 {Dumbbell Step Up: dumbbell-step-up-resized.webp}
 {Dumbbell Suitcase Carry: Dumbbell-suitcase-carry-2.png}
 {Dumbbell Sumo Squat: dumbbell-sumo-squat-resized.png}
@@ -587,7 +589,7 @@ Band Exercises:
 
 
 export async function POST(req) {
-    const filePath = path.join(process.cwd(), "content", "Blueprint Phase 1.pdf");
+    const filePath = path.join(process.cwd(), "content", "fitness-handbook.pdf");
     const loader = new PDFLoader(filePath);
 
     const docs = await loader.load();

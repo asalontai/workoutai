@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useRouter } from "next/navigation"
 import Image from 'next/image';
 import Logo from "../../public/Logo.png"
@@ -11,7 +11,7 @@ import Footer from "../components/Footer"
 import { BouncingDots } from "../components/bouncingDots";
 import getStripe from "@/lib/get-stripe";
 
-export default function ResultPage() {
+const ResultPageContent = () => {
     const router = useRouter()
     const searchParams = useSearchParams()
     const session_id = searchParams.get("session_id")
@@ -335,4 +335,12 @@ export default function ResultPage() {
             <Footer />
         </Box>
     )
+}
+
+export default function ResultPage() {
+    return (
+        <Suspense fallback={<CircularProgress />}>
+            <ResultPageContent />
+        </Suspense>
+    );
 }
