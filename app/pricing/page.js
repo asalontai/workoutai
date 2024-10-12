@@ -50,18 +50,27 @@ export default function Pricing() {
         <Box
             display="flex"
             flexDirection="column"
-            height="100vh"
-            width="100vw"
+            minHeight="100vh"
             color={"white"}
         >
-            <Navbar show={true} transparent={false} />
+            <Box marginBottom={3} height={"25px"}>
+                <Navbar show={true} transparent={false}/>
+            </Box>
             <Box
-
+                mt={"auto"}
+                mb={"auto"}
+                ml={"auto"} 
+                mr={"auto"}
+                textAlign={"center"}
+                display={"flex"}
+                flexDirection={"column"}
+                justifyContent={"center"}
+                alignItems={"center"}
             >
-                <Typography mt={25} pb={2} width={200} ml={"auto"} mr={"auto"} variant="h2" align="center" fontWeight={"bold"} sx={{ paddingBottom: "3px", borderBottom: "2px solid white" }}>
+                <Typography pb={2} width={200} variant={isMobile ? "h3" : "h2"} align="center" fontWeight={"bold"} mb={isMobile ? 5 : ""} sx={{ paddingBottom: "3px", borderBottom: "2px solid white" }}>
                     Pricing
                 </Typography>
-                <Grid container mt={-10} justifyContent={"center"} spacing={isMobile ? 7 : 20}>
+                <Grid container justifyContent={"center"} spacing={isMobile ? 7 : 20}>
                 <Grid item xs={10} md={4}>
                     <Box
                         sx={{
@@ -73,18 +82,18 @@ export default function Pricing() {
                             justifyContent: "center",
                             border: "1px solid",
                             boxShadow: "",
-                            height: "300px",
+                            height: "250px",
                             borderRadius: 3,
                             boxShadow: "3px 3px 5px 1px rgb(255, 255, 255, 0.4)"
                         }}
                     >
                         <Typography variant='h3' mt={1} fontWeight={"bold"} >Free</Typography>
-                        <Typography variant='h5' mt={2}> $0.00 / month</Typography>
-                        <Typography variant="h6" mt={2}>Access to 10 free chats per month</Typography>
+                        <Typography variant='h5' mt={1}> $0.00 / month</Typography>
+                        <Typography variant="h6" mt={1} maxWidth={"250px"}>Access to 10 free chats per month</Typography>
                         <Button 
                                 variant="contained" 
                                 sx={{ 
-                                    mt: 3, 
+                                    mt: 1, 
                                     mb: 2, 
                                     height: "50px",
                                     width: "150px",
@@ -112,19 +121,19 @@ export default function Pricing() {
                             justifyContent: "center",
                             border: "1px solid",
                             boxShadow: "",
-                            height: "300px",
+                            height: isMobile ? "250px" : "300px",
                             borderRadius: 3,
                             boxShadow: "3px 3px 5px 1px rgb(255, 255, 255, 0.4)"
                         }}
                         >
                             <Typography variant='h3' mt={1} fontWeight={"bold"} >Pro</Typography>
-                            <Typography variant='h5' mt={2}> $5.00 / month</Typography>
-                            <Typography variant="h6" mt={2}>Access to unlimited chats per month</Typography>
+                            <Typography variant='h5' mt={isMobile ? 1 : 2}> $5.00 / month</Typography>
+                            <Typography variant="h6" mt={isMobile ? 1 : 2}>Access to unlimited chats per month</Typography>
                             <Button 
                                 variant="contained" 
                                 sx={{ 
-                                    mt: 3, 
-                                    mb: 2, 
+                                    mt: 1, 
+                                    mb: 1, 
                                     height: "50px",
                                     width: "150px",
                                     color: session?.user?.isActive ? "black" : "white",

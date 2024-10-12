@@ -167,12 +167,13 @@ export default function Dashboard() {
         flexDirection={"column"}
         justifyContent={"center"}
         alignItems={"center"}
-        marginTop={isMobile ? 0 : 12}
+        marginTop={"auto"}
+        marginBottom={"auto"}
       >
         <Stack
           direction={"column"}
           width={isMobile ? "100vw" : "1000px"}
-          height={isMobile ? "580px" : "900px"}
+          height={isMobile ? "630px" : "900px"}
           spacing={3}
           mt={5}
           bgcolor={"white"}
@@ -199,7 +200,7 @@ export default function Dashboard() {
             spacing={2}
             flexGrow={1}
             overflow={"auto"}
-            maxHeight={isMobile ? "400px" : "700px"}
+            maxHeight={isMobile ? "450px" : "700px"}
             sx={{
               '& .message': {
                 marginBottom: '16px',
@@ -230,10 +231,10 @@ export default function Dashboard() {
                         msg.role === 'assistant' ? "white" : "black"
                       }
                       borderRadius={6}
-                      maxWidth={"575px"}
+                      maxWidth={"600px"}
                       p={2}
-                      marginRight={"25px"}
-                      marginLeft={"25px"}
+                      marginRight={"20px"}
+                      marginLeft={"20px"}
                       sx={{
                         '& ol': {
                           marginLeft: '5px',
@@ -263,7 +264,7 @@ export default function Dashboard() {
                         '& img': {
                           width: "100%",
                           height: "auto",
-                          maxWidth: "400px",
+                          maxWidth: isMobile ? "250px" : "400px",
                           display: 'block',
                           ml: "auto",
                           mr: "auto",

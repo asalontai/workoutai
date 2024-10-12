@@ -180,7 +180,7 @@ export default function LandingPage() {
                 justifyContent: "center",
                 border: "1px solid",
                 boxShadow: "",
-                height: "220px",
+                height: "245px",
                 borderRadius: 3,
                 boxShadow: "3px 3px 5px 1px rgb(255, 255, 255, 0.4)",
                 "@media (max-width: 600px)": {
@@ -217,7 +217,7 @@ export default function LandingPage() {
                 justifyContent: "center",
                 border: "1px solid",
                 boxShadow: "",
-                height: "220px",
+                height: "245px",
                 borderRadius: 3,
                 boxShadow: "3px 3px 5px 1px rgb(255, 255, 255, 0.4)",
                 "@media (max-width: 600px)": {
@@ -237,7 +237,7 @@ export default function LandingPage() {
               >
                 <Restaurant sx={{ width: 45, height: 45}} />
               </Box>
-              <Typography variant='h6' mb={1} fontWeight={"bold"}>Nutritional Advice based on Needs</Typography>
+              <Typography variant={isMobile ? "p" : "h6"} mb={1} fontWeight={"bold"}>Nutritional Advice based on Needs</Typography>
               <Typography variant='p' sx={{ marginTop: "5px" }}>- Customized meal plans for dietary goals</Typography>
               <Typography variant='p' sx={{ marginTop: "5px" }}>- Nutrient-dense food recommendations</Typography>
               <Typography variant='p' sx={{ marginTop: "5px" }}>- Caloric intake and macronutrient balance</Typography>
@@ -254,7 +254,7 @@ export default function LandingPage() {
                 justifyContent: "center",
                 border: "1px solid",
                 boxShadow: "",
-                height: "220px",
+                height: "245px",
                 borderRadius: 3,
                 boxShadow: "3px 3px 5px 1px rgb(255, 255, 255, 0.4)",
                 "@media (max-width: 600px)": {
@@ -275,7 +275,7 @@ export default function LandingPage() {
                 <HelpCenter sx={{ width: 45, height: 45}} />
               </Box>
               <Typography 
-                variant='h6' 
+                variant={isMobile ? "p" : "h6"}
                 mb={1} 
                 fontWeight={"bold"}
               >
@@ -303,7 +303,7 @@ export default function LandingPage() {
                 justifyContent: "center",
                 border: "1px solid",
                 boxShadow: "",
-                height: "200px",
+                height: "225px",
                 borderRadius: 3,
                 boxShadow: "3px 3px 5px 1px rgb(255, 255, 255, 0.4)"
               }}
@@ -338,7 +338,7 @@ export default function LandingPage() {
                 justifyContent: "center",
                 border: "1px solid",
                 boxShadow: "",
-                height: "200px",
+                height: "225px",
                 borderRadius: 3,
                 boxShadow: "3px 3px 5px 1px rgb(255, 255, 255, 0.4)"
               }}

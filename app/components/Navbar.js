@@ -71,7 +71,7 @@ const Navbar = ({ transparent, show, handleFeatures, handlePricing }) => {
                   onClose={toggleDrawer(false)}
                 >
                   <List
-                    sx={{ width: 215, backgroundColor: '#2D2D2D', height: "100vh", paddingTop: 7, textAlign: "center", color: 'white' }} 
+                    sx={{ width: 215, backgroundColor: '#2D2D2D', height: "100vh", paddingTop: 7, textAlign: "center", color: 'white', borderRight: "1px solid white" }} 
                     onClick={toggleDrawer(false)}
                     onKeyDown={toggleDrawer(false)}
                   >
