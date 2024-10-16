@@ -7,13 +7,12 @@ import Link from "next/link";
 import WorkoutAI from "@/public/WorkoutAI Logo.png"
 import GoogleIcon from '@/public/google-icon.svg'
 import Image from "next/image";
-import LandingPage from "../../public/Auth Picture.webp";
-import Logo from "../../public/Logo.png"
-import Footer from "../components/Footer";
+import LandingPage from "../../../public/Auth Picture.webp";
+import Logo from "../../../public/Logo.png"
 import { signIn } from "next-auth/react";
 
 export default function SignUp() {
-    const [username, setUsername] = useState("");
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -28,18 +27,11 @@ export default function SignUp() {
         setError("");
         setProcessing(true);
 
-        if (!username || !email || !password || !confirmPassword) {
+        if (!name || !email || !password || !confirmPassword) {
             setError("All fields are required.");
             setProcessing(false);
             return;
-        }
-
-        const usernameRegex = /^[a-zA-Z0-9_]{3,}$/;
-        if (!usernameRegex.test(username)) {
-            setError("Username must be at least 3 characters long and contain only letters, numbers, and underscores.");
-            setProcessing(false);
-            return;
-        }
+        } 
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
@@ -67,7 +59,7 @@ export default function SignUp() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, username, password }),
+                body: JSON.stringify({ email, name, password }),
             });
 
             const data = await response.json();
@@ -80,7 +72,7 @@ export default function SignUp() {
 
             if (response.ok) {
                 console.log("User signed up:", data.user);
-                router.push('/sign-in');
+                router.push('/dashboard/sign-in');
             } else {
                 setError(data.message);
             }
@@ -96,6 +88,7 @@ export default function SignUp() {
         setProcessing(true)
         try {
           await signIn("google")
+          setProcessing(false)
         } catch (err) {
           setError(err)
           setProcessing(false)
@@ -160,10 +153,10 @@ export default function SignUp() {
                     Sign Up
                 </Typography>
                 <TextField
-                    label="Username"
+                    label="Name"
                     variant="outlined"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     sx={{
                         marginTop: "15px",
                         marginLeft: isMobile && "16px",
@@ -362,7 +355,7 @@ export default function SignUp() {
                 </Button>
                 <Box marginLeft={isMobile && "auto"} marginRight={isMobile && "auto"} width={isMobile ? '200px' : '400px'} display={"flex"} alignItems={"center"} gap={1} marginTop={"15px"} flexDirection={isMobile && "column"}>
                     <Typography>Have an account?</Typography>
-                    <Link href={"/sign-in"} className="custom-link">
+                    <Link href={"/auth/sign-in"} className="custom-link">
                         Login with account
                     </Link>
                 </Box>

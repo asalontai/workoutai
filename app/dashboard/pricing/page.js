@@ -1,9 +1,7 @@
 "use client"
 
 import { Box, Button, Grid, Typography, useMediaQuery, useTheme } from "@mui/material"
-import Navbar from "../components/Navbar"
 import getStripe from '@/lib/get-stripe';
-import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 import { db } from "@/lib/db";
 import { getSession, useSession } from "next-auth/react";
@@ -53,9 +51,6 @@ export default function Pricing() {
             minHeight="100vh"
             color={"white"}
         >
-            <Box marginBottom={3} height={"25px"}>
-                <Navbar show={true} transparent={false}/>
-            </Box>
             <Box
                 mt={"auto"}
                 mb={"auto"}
@@ -152,7 +147,6 @@ export default function Pricing() {
                     </Grid>
                 </Grid>
             </Box>
-            <Footer />
-        </Box>
+\        </Box>
     )
 }

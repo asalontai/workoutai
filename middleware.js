@@ -9,7 +9,7 @@ export async function middleware(req) {
   
   console.log('Callback URL:', callbackUrl);
 
-  if (token && (pathname === "/" || pathname === '/sign-in' || pathname === '/sign-up')) {
+  if (token && (pathname === "/" || pathname === '/auth/sign-in' || pathname === '/auth/sign-up')) {
     return NextResponse.redirect(new URL(callbackUrl , req.url));
   }
 
@@ -21,5 +21,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-  matcher: ["/sign-in", "/sign-up", "/dashboard", "/"],
+  matcher: ["/auth/sign-in", "/auth/sign-up", "/dashboard", "/"],
 };

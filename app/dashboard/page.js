@@ -1,11 +1,8 @@
 "use client"
 
 import React, { useState, useEffect, useRef, } from 'react';
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { Box, Button, Stack, TextField, useMediaQuery, useTheme } from "@mui/material";
 import { marked } from 'marked';
-import Footer from '../components/Footer';
-import Navbar from '../components/Navbar';
 import Image from 'next/image';
 import Icon from "../icon.ico"
 import Logo from "../../public/Logo.png"
@@ -28,20 +25,37 @@ export default function Dashboard() {
 
   const [hasInitialMessage, setHasInitialMessage] = useState(false);
 
+  const [name, setName] = useState('');
+  
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const name = session?.user.name || session?.user.username
-  const initialMessage = `
-        <h3>Hello, ${name}!</h3>
-        <p>I'm your dedicated fitness coach, here to help you crush your fitness goals.</p>
-        <p>Whether you're looking for workout tips, diet advice, or just some motivation, I'm here to guide you.</p>
-        <p>How can we kickstart your fitness journey today?</p>
-  `;
 
   useEffect(() => {
     messagesEndRef.current.scrollIntoView({ behavior: "smooth"})
   }, [messages])
+
+  useEffect(() => {
+    let name;
+    setIsLoading(true)
+    if (session?.user?.name) {
+      name = session.user.name;
+      console.log("Session")
+      setIsLoading(false);
+    }
+
+    if (!hasInitialMessage && name) {
+      setHasInitialMessage(true);
+      const initialMessage = `
+        <h3>Hello, ${name}!</h3>
+        <p>I'm your dedicated fitness coach, here to help you crush your fitness goals.</p>
+        <p>Whether you're looking for workout tips, diet advice, or just some motivation, I'm here to guide you.</p>
+        <p>How can we kickstart your fitness journey today?</p>
+      `;
+      setIsLoading(false)
+      typeMessage(initialMessage, 'assistant');
+    }
+  }, [hasInitialMessage, session, isLoading]);
 
   const typeMessage = (messageContent, role) => {
     let index = 0;
@@ -67,18 +81,9 @@ export default function Dashboard() {
         setIsTyping(false);
       }
     }
-
-    update();
-
     setMessages([{ role, content: '' }]);
     type();
   };
-
-  if (!hasInitialMessage) {
-    update()
-    setHasInitialMessage(true);
-    typeMessage(initialMessage, 'assistant');
-  }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter' && !event.shiftKey) {
@@ -158,9 +163,6 @@ export default function Dashboard() {
       flexDirection="column"
       minHeight="100vh"
     >
-      <Box marginBottom={2} height={"25px"}>
-        <Navbar show={true} transparent={false}/>
-      </Box>
       <Box 
         width={"100vw"}
         display="flex"
@@ -351,7 +353,6 @@ export default function Dashboard() {
           </Stack>
         </Stack>
       </Box>
-      <Footer />
     </Box>
   );
 }

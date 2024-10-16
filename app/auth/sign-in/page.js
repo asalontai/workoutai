@@ -1,18 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { signIn } from 'next-auth/react'
+import { getSession, signIn, signOut, useSession } from 'next-auth/react'
 import { Box, Button, Divider, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import WorkoutAI from "@/public/WorkoutAI Logo.png"
 import GoogleIcon from "@/public/google-icon.svg";
 import Image from "next/image";
-import Footer from "../components/Footer";
-import LandingPage from "../../public/Auth Picture.webp";
-import Logo from "../../public/Logo.png"
+import LandingPage from "../../../public/Auth Picture.webp";
+import Logo from "../../../public/Logo.png"
 
 export default function SignIn() {
+  const { data: session } = useSession()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -35,6 +35,7 @@ export default function SignIn() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
         setError("Please enter a valid email address.");
+        setProcessing(false)
         return;
     }
 
@@ -45,18 +46,19 @@ export default function SignIn() {
     })
 
     console.log(signInData)
+    setProcessing(false);
 
     if (signInData.error) {
-      if (signInData.error === 'CredentialsSignin') {
+      console.log(signInData.error)
+      if (signInData.error === "CredentialsSignin") {
         setError("Invalid email or password.");
       } else {
         setError("An unexpected error occurred. Please try again.");
       }
     } else {
+
       router.push('/dashboard');
     }
-
-    setProcessing(false);
   };
 
   const handleGoogle = async () => {
@@ -64,8 +66,8 @@ export default function SignIn() {
     try {
       await signIn("google")
     } catch (err) {
-      setError(err)
       setProcessing(false)
+      setError(err)
     } finally {
       setProcessing(false)
     }
@@ -259,7 +261,7 @@ export default function SignIn() {
         <Box marginLeft={isMobile && "auto"} marginRight={isMobile && "auto"} 
           width={isMobile ? '200px' : '400px'} display={"flex"} alignItems={"center"} gap={1} marginTop={"15px"} flexDirection={isMobile && "column"}>
           <Typography>Don&apos;t have an account?</Typography>
-          <Link href={"/sign-up"} className="custom-link">
+          <Link href={"/auth/sign-up"} className="custom-link">
             Create an account
           </Link>
         </Box>

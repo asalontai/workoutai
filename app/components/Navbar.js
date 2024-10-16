@@ -75,107 +75,35 @@ const Navbar = ({ transparent, show, handleFeatures, handlePricing }) => {
                     onClick={toggleDrawer(false)}
                     onKeyDown={toggleDrawer(false)}
                   >
-                    {session ? (
-                      <>                      
-                        <ListItem sx={{ borderBottom: "1px solid white", borderTop: "1px solid white", textAlign: "center", cursor: "pointer" }} onClick={() => router.push("/dashboard")}>
-                          <ListItemText primary="Dashboard" />
-                        </ListItem>
-                        <ListItem sx={{ borderBottom: "1px solid white", textAlign: "center", cursor: "pointer" }} onClick={() => router.push("/pricing")}>
-                          <ListItemText primary="Pricing" />
-                        </ListItem>
-                        <ListItem sx={{ borderBottom: "1px solid white", textAlign: "center", cursor: "pointer" }} onClick={() => signOut({ redirect: true, callbackUrl: "/" })}>
-                          <ListItemText primary="Sign Out" />
-                        </ListItem>
-                      </>
-                    ) : (
-                      <>
-                        <ListItem sx={{ borderTop: "1px solid white", borderBottom: "1px solid white", textAlign: "center", cursor: "pointer" }} onClick={() => router.push('/')}>
-                          <ListItemText primary="Home" />
-                        </ListItem>
-                        <ListItem sx={{ borderBottom: "1px solid white", textAlign: "center", cursor: "pointer" }}>
-                          <ListItemText primary="About Us" />
-                        </ListItem>
-                        <ListItem sx={{ borderBottom: "1px solid white", textAlign: "center", cursor: "pointer" }} onClick={handleFeatures}>
-                          <ListItemText primary="Features" />
-                        </ListItem>
-                        <ListItem sx={{ borderBottom: "1px solid white", textAlign: "center", cursor: "pointer" }} onClick={handlePricing}>
-                          <ListItemText primary="Pricing" />
-                        </ListItem>
-                        <ListItem sx={{ borderBottom: "2px solid white", textAlign: "center", cursor: "pointer" }} onClick={() => router.push('/sign-in')}>
-                          <ListItemText primary="Login" />
-                        </ListItem>
-                        <ListItem sx={{ borderBottom: "2px solid white", textAlign: "center", cursor: "pointer" }} onClick={() => router.push('/sign-up')}>
-                          <ListItemText primary="Sign Up" />
-                        </ListItem>
-                      </>
-                    )}
+                    <ListItem sx={{ borderTop: "1px solid white", borderBottom: "1px solid white", textAlign: "center", cursor: "pointer" }} onClick={() => router.push('/')}>
+                      <ListItemText primary="Home" />
+                    </ListItem>
+                    <ListItem sx={{ borderBottom: "1px solid white", textAlign: "center", cursor: "pointer" }}>
+                      <ListItemText primary="About Us" />
+                    </ListItem>
+                    <ListItem sx={{ borderBottom: "1px solid white", textAlign: "center", cursor: "pointer" }} onClick={handleFeatures}>
+                      <ListItemText primary="Features" />
+                    </ListItem>
+                    <ListItem sx={{ borderBottom: "1px solid white", textAlign: "center", cursor: "pointer" }} onClick={handlePricing}>
+                      <ListItemText primary="Pricing" />
+                    </ListItem>
+                    <ListItem sx={{ borderBottom: "2px solid white", textAlign: "center", cursor: "pointer" }} onClick={() => router.push('/auth/sign-in')}>
+                      <ListItemText primary="Login" />
+                    </ListItem>
+                    <ListItem sx={{ borderBottom: "2px solid white", textAlign: "center", cursor: "pointer" }} onClick={() => router.push('/auth/sign-up')}>
+                      <ListItemText primary="Sign Up" />
+                    </ListItem>
                   </List>
                 </Drawer>
               </>
             ) : (
               <>
-                {session ? (
-                  <>  
-                    <Button color="inherit" onClick={() => router.push("/dashboard")}>Dashboard</Button>
-                    <Button color="inherit" onClick={() => router.push("/pricing")}>Pricing</Button>
-                    <IconButton
-                      size="large"
-                      aria-label="account of current user"
-                      aria-controls="menu-appbar"
-                      aria-haspopup="true"
-                      color="inherit"
-                      onClick={handleMenu}
-                    >
-                      <AccountCircle />
-                    </IconButton>
-                    <Menu
-                      id="menu-appbar"
-                      anchorE1={anchor}
-                      anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
-                      }}
-                      keepMounted
-                      transformOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
-                      }}
-                      open={Boolean(anchor)}
-                      onClose={handleClosing}
-                      sx={{
-                        "& .MuiPaper-root": {
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            backgroundColor: "white",
-                            borderRadius: "10px",
-                            mt: 4,
-                            ml: 1,
-                            width: 115,
-                            p: 1,
-                            overflow: "hidden",
-                            color: "black",
-                            textAlign: "center",
-                            boxShadow: "3px 3px 5px 1px rgb(255, 255, 255, 0.4)"
-                        },
-                      }}
-                    >
-                      <MenuItem style={{ color: "inherit", opacity: 1, fontWeight: "bold" }} disabled>Plan: {session.user.isActive ? "Pro" : "Free"}</MenuItem>
-                      <MenuItem sx={{ fontWeight: "bold" }} onClick={() => router.push("/profile")}>Profile</MenuItem>
-                      <MenuItem sx={{ fontWeight: "bold" }}>Account</MenuItem>
-                      <MenuItem sx={{ fontWeight: "bold" }} onClick={() => signOut({ redirect: true, callbackUrl: "/" })}>Sign Out</MenuItem>
-                    </Menu>
-                  </>
-                ) : (
-                  <>
-                    <Button color="inherit" href='/'>Home</Button>
-                    <Button color="inherit">About Us</Button>
-                    <Button color="inherit" onClick={handleFeatures}>Features</Button>
-                    <Button color="inherit" onClick={handlePricing}>Pricing</Button>
-                    <Button color="inherit" onClick={() => { router.push("/sign-in") }}>Login</Button>
-                    <Button color="inherit" onClick={() => { router.push("/sign-up") }}>Sign Up</Button>
-                  </>
-                )}
+                <Button color="inherit" href='/'>Home</Button>
+                <Button color="inherit">About Us</Button>
+                <Button color="inherit" onClick={handleFeatures}>Features</Button>
+                <Button color="inherit" onClick={handlePricing}>Pricing</Button>
+                <Button color="inherit" onClick={() => { router.push("/auth/sign-in") }}>Login</Button>
+                <Button color="inherit" onClick={() => { router.push("/auth/sign-up") }}>Sign Up</Button>
               </>
             )}
         </Toolbar>

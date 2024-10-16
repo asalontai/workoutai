@@ -1,11 +1,9 @@
 "use client"
 
 import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
 import Image from "next/image";
-import Logo from "../../public/Logo.png"
-import defaultProfile from "../../public/DefaultProfile.jpg"
+import Logo from "../../../public/Logo.png"
+import defaultProfile from "../../../public/DefaultProfile.jpg"
 import InputIcon from '@mui/icons-material/Input';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
@@ -17,7 +15,6 @@ export default function Profile() {
 
     const [isEditing, setIsEditing] = useState(false);
     const [newName, setNewName] = useState(session?.user?.name);
-    const [newUsername, setNewUsername] = useState(session?.user?.username);
     const [newImage, setNewImage] = useState(session?.user?.image || defaultProfile);
 
     const handleImage = async (e) => {
@@ -44,7 +41,6 @@ export default function Profile() {
             },
             body: JSON.stringify({
                 name: newName,
-                username: newUsername,
                 image: newImage,
             }),
         });
@@ -65,7 +61,6 @@ export default function Profile() {
             color={"black"}
             width={"100vw"}
         >
-            <Navbar show={true} transparent={false} />
             <Box
                 width={"550px"}
                 height={"500px"}
@@ -145,37 +140,6 @@ export default function Profile() {
                             Name: {session?.user?.name ? session?.user?.name : "N/A"}
                         </Typography>
                     )}
-
-                    {isEditing ? (
-                        <Box
-                            display={"flex"}
-                            alignItems={"center"}
-                            justifyContent={"center"}
-                            mt={2}
-                            gap={1}
-                        >
-                            <Typography variant="h6">
-                                Username:
-                            </Typography>  
-                            <TextField
-                                defaultValue={session?.user?.username}
-                                value={newUsername}
-                                onChange={(e) => setNewUsername(e.target.value)}
-                                label="Username"
-                                variant="outlined"
-                                size="small"
-                                sx={{
-                                    width: 145,
-                                    height: 40
-                                }}
-                            />
-                        </Box>
-                    ) : (
-                        <Typography variant="h6" mt={3}>
-                            Username: {session?.user?.username ? session?.user?.username : "N/A"}
-                        </Typography>
-                    )}
-
                     <Box
                         display={"flex"}
                         gap={1}
@@ -229,7 +193,6 @@ export default function Profile() {
                     )}
                 </Box>
             </Box>
-            <Footer />
         </Box>
     )
 }

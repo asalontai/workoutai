@@ -29,7 +29,8 @@ export async function POST(req) {
             data: {
                 username,
                 email,
-                password: hashedPassword
+                password: hashedPassword,
+                isCredential: true
             }
         });
 

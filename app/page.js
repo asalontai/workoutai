@@ -321,7 +321,7 @@ export default function LandingPage() {
                     bgcolor: "#4B4B4B"
                   } 
                 }}
-                onClick={() => router.push(`/sign-in?callbackUrl=/pricing`)}
+                onClick={() => router.push(`/auth/sign-in?callbackUrl=/dashboard/pricing`)}
               >
                 Choose Basic
               </Button>
@@ -356,7 +356,7 @@ export default function LandingPage() {
                     bgcolor: "#4B4B4B"
                   } 
                 }}
-                onClick={() => router.push(`/sign-in?callbackUrl=/pricing`)}
+                onClick={() => router.push(`/auth/sign-in?callbackUrl=/dashboard/pricing`)}
               >
                 Choose Pro
               </Button>
