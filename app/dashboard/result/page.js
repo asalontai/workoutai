@@ -3,12 +3,10 @@
 import { useState, useEffect, Suspense } from "react"
 import { useRouter } from "next/navigation"
 import Image from 'next/image';
-import Logo from "../../public/Logo.png"
+import Logo from "../../../public/Logo.png"
 import { useSearchParams } from "next/navigation"
 import { Box, Button, CircularProgress, Container, Typography } from "@mui/material"
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
-import { BouncingDots } from "../components/bouncingDots";
+import { BouncingDots } from "../../components/bouncingDots";
 import getStripe from "@/lib/get-stripe";
 
 const ResultPageContent = () => {
@@ -90,13 +88,13 @@ const ResultPageContent = () => {
                 color={"black"}
                 width={"100vw"}
             >
-                <Navbar show={true} transparent={false} /> 
                 <Box
                     width={"550px"}
                     height={"500px"}
                     bgcolor={"white"}
                     textAlign={"center"}
-                    mt={22}
+                    mt={"auto"}
+                    mb={"auto"}
                     ml={"auto"}
                     mr={"auto"}
                     borderRadius={"8px 8px 8px 8px"}
@@ -129,7 +127,6 @@ const ResultPageContent = () => {
                         </Box>
                     </Box> 
                 </Box>
-                <Footer />
             </Box>
         )
     }
@@ -142,13 +139,13 @@ const ResultPageContent = () => {
             color={"black"}
             width={"100vw"}
         >
-            <Navbar show={true} transparent={false} />
             <Box
                 width={"550px"}
                 height={"500px"}
                 bgcolor={"white"}
                 textAlign={"center"}
-                mt={22}
+                mt={"auto"}
+                mb={"auto"}
                 ml={"auto"}
                 mr={"auto"}
                 borderRadius={"8px 8px 8px 8px"}
@@ -200,7 +197,6 @@ const ResultPageContent = () => {
                     </Button>
                 </Box> 
             </Box>
-            <Footer />
         </Box>
     }
 
@@ -212,7 +208,6 @@ const ResultPageContent = () => {
             color={"black"}
             width={"100vw"}
         >
-            <Navbar show={true} transparent={false} />
             {
                 session.payment_status === "paid" ? (
                     <Box
@@ -220,7 +215,8 @@ const ResultPageContent = () => {
                         height={"500px"}
                         bgcolor={"white"}
                         textAlign={"center"}
-                        mt={22}
+                        mt={"auto"}
+                        mb={"auto"}
                         ml={"auto"}
                         mr={"auto"}
                         borderRadius={"8px 8px 8px 8px"}
@@ -281,7 +277,8 @@ const ResultPageContent = () => {
                         height={"500px"}
                         bgcolor={"white"}
                         textAlign={"center"}
-                        mt={22}
+                        mt={"auto"}
+                        mb={"auto"}
                         ml={"auto"}
                         mr={"auto"}
                         borderRadius={"8px 8px 8px 8px"}
@@ -332,7 +329,6 @@ const ResultPageContent = () => {
                     </Box>
                 )
             }
-            <Footer />
         </Box>
     )
 }

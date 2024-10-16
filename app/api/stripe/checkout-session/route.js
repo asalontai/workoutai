@@ -46,8 +46,8 @@ export async function POST(req) {
                 quantity: 1,
             },
         ],
-        success_url: `${req.headers.get('origin')}/result?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${req.headers.get('origin')}/result?session_id={CHECKOUT_SESSION_ID}`,
+        success_url: `${req.headers.get('origin')}/dashboard/result?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${req.headers.get('origin')}/dashboard/result?session_id={CHECKOUT_SESSION_ID}`,
         subscription_data: {
             metadata: {
                 payingUserId: session.user.id,

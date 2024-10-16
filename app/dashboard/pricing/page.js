@@ -4,7 +4,7 @@ import { Box, Button, Grid, Typography, useMediaQuery, useTheme } from "@mui/mat
 import getStripe from '@/lib/get-stripe';
 import { useEffect, useState } from "react";
 import { db } from "@/lib/db";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 export default function Pricing() {
     const theme = useTheme();
