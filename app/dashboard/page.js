@@ -37,11 +37,9 @@ export default function Dashboard() {
 
   useEffect(() => {
     let name;
-    setIsLoading(true)
     if (session?.user?.name) {
       name = session.user.name;
       console.log("Session")
-      setIsLoading(false);
     }
 
     if (!hasInitialMessage && name) {
@@ -52,10 +50,9 @@ export default function Dashboard() {
         <p>Whether you're looking for workout tips, diet advice, or just some motivation, I'm here to guide you.</p>
         <p>How can we kickstart your fitness journey today?</p>
       `;
-      setIsLoading(false)
       typeMessage(initialMessage, 'assistant');
     }
-  }, [hasInitialMessage, session, isLoading]);
+  }, [hasInitialMessage, session]);
 
   const typeMessage = (messageContent, role) => {
     let index = 0;
