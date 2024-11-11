@@ -12,6 +12,7 @@ export default function PasswordChange() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [processing, setProcessing] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -22,6 +23,7 @@ export default function PasswordChange() {
 
   const handlePasswordChange = async () => {
     setError("");
+    setSuccess("");
     setProcessing(true);
 
     if (!password || !confirmPassword) {
@@ -55,12 +57,14 @@ export default function PasswordChange() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message);
+        setError(data.error.message);
         setProcessing(false);
         return;
-      } else {
-        router.push("/auth/sign-in")
       }
+
+      setSuccess("Password Reset Successful.")
+
+      router.push("/auth/sign-in")
     } catch (err) {
       setError(err.message);
     } finally {
@@ -207,21 +211,32 @@ export default function PasswordChange() {
           '&:hover': {
               bgcolor: "#4B4B4B"
           },
+          '&.Mui-disabled': {
+            bgcolor: "#5A5A5A", 
+            color: "#A0A0A0",   
+            cursor: 'not-allowed'
+          },
           marginLeft: isMobile && "16px",
           marginRight: isMobile && "16px",
           width: isMobile ? 'calc(100% - 32px)' : '400px',
           marginTop: "5px"
         }} 
           variant="contained"
+          disabled={processing}
           onClick={handlePasswordChange}
         >
           {processing ? "Resetting Password..." : "Reset Password"}
         </Button>
         <Box marginLeft={isMobile && "16px"} marginRight={isMobile && "16px"} 
-          width={isMobile ? 'calc(100% - 32px)' : '400px'} display={"flex"} justifyContent={"center"} alignItems={"center"} height="24px" marginTop={"10px"}>
+          width={isMobile ? 'calc(100% - 32px)' : '400px'} display={"flex"} justifyContent={"center"} alignItems={"center"} height="24px" marginTop={"10px"} textAlign={"center"}>
           {error && (
             <Typography color="error">
               {error}
+            </Typography>
+          )}
+          {success && (
+            <Typography color="success.main">
+              {success}
             </Typography>
           )}
         </Box>

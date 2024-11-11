@@ -65,7 +65,7 @@ export default function SignUp() {
             const data = await response.json();
 
             if (response.status === 409 || response.status === 500) {
-                setError(data.message);
+                setError(data.error.message);
                 setProcessing(false);
                 return;
             }

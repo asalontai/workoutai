@@ -10,12 +10,14 @@ import Logo from "../../../public/Logo.png"
 export default function EmailReset() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [processing, setProcessing] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleEmailReset = async () => {
     setError("");
+    setSuccess("");
     setProcessing(true);
 
     if (!email) {
@@ -43,10 +45,11 @@ export default function EmailReset() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message);
+        setError(data.error.message);
         setProcessing(false);
         return;
       }
+      setSuccess("Reset email sent successfully. Please check your inbox.")
     } catch (err) {
       setError(err.message);
     } finally {
@@ -157,6 +160,11 @@ export default function EmailReset() {
           '&:hover': {
               bgcolor: "#4B4B4B"
           },
+          '&.Mui-disabled': {
+            bgcolor: "#5A5A5A", 
+            color: "#A0A0A0",   
+            cursor: 'not-allowed'
+          },
           marginLeft: isMobile && "16px",
           marginRight: isMobile && "16px",
           width: isMobile ? 'calc(100% - 32px)' : '400px',
@@ -164,14 +172,20 @@ export default function EmailReset() {
         }} 
           variant="contained"
           onClick={handleEmailReset}
+          disabled={processing}
         >
           {processing ? "Sending Reset Email..." : "Send Reset Email"}
         </Button>
         <Box marginLeft={isMobile && "16px"} marginRight={isMobile && "16px"} 
-          width={isMobile ? 'calc(100% - 32px)' : '400px'} display={"flex"} justifyContent={"center"} alignItems={"center"} height="24px" marginTop={"3px"}>
+          width={isMobile ? 'calc(100% - 32px)' : '400px'} display={"flex"} justifyContent={"center"} alignItems={"center"} height="24px" marginTop={"3px"} textAlign={"center"}>
           {error && (
             <Typography color="error">
               {error}
+            </Typography>
+          )}
+          {success && (
+            <Typography color="success.main">
+              {success}
             </Typography>
           )}
         </Box>

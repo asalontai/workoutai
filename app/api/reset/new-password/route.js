@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { getPasswordResetTokenByToken } from "@/lib/token-reset";
-import { hash } from "bcrypt";
+import { compare, hash } from "bcrypt";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -43,6 +43,12 @@ export async function POST(req) {
         };
     
         const hashedPassword = await hash(password, 10);
+
+        const isSamePassword = await compare(password, existingUser.password);
+
+        if (isSamePassword) {
+            return NextResponse.json({ code: "same-password", message: "New password cannot be the same as the current password" }, { status: 400 });
+        }
     
         await db.user.update({
             where: { email: existingUser.email },
