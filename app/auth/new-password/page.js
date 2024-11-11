@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { Box, Button, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Suspense, useState } from "react";
+import { Box, Button, CircularProgress, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import LandingPage from "../../../public/Auth Picture.webp";
 import Logo from "../../../public/Logo.png"
 
-export default function PasswordChange() {
+const PasswordChangeContent = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
@@ -64,7 +64,9 @@ export default function PasswordChange() {
 
       setSuccess("Password Reset Successful.")
 
-      router.push("/auth/sign-in")
+      setTimeout(() => {
+        router.push("/auth/sign-in");
+      }, 2000);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -243,4 +245,13 @@ export default function PasswordChange() {
       </Box>
     </Box>
   );
+}
+
+export default function PasswordChangePage() {
+  return (
+    <Suspense fallback={<CircularProgress />}>
+      <PasswordChangeContent />
+    </Suspense>
+
+  )
 }
