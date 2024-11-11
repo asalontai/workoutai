@@ -72,7 +72,7 @@ export default function SignUp() {
 
             if (response.ok) {
                 console.log("User signed up:", data.user);
-                router.push('/dashboard/sign-in');
+                router.push('/auth/sign-in');
             } else {
                 setError(data.message);
             }
@@ -296,7 +296,7 @@ export default function SignUp() {
                     }}
                 />
                 <Box marginTop={"20px"} display={"flex"} justifyContent={"space-between"} alignItems={"center"} marginLeft={isMobile && "24px"} marginRight={isMobile && "24px"} width={isMobile ? 'calc(100% - 48px)' : '400px'}>
-                    <Link href={"/sign-in"} className="custom-link">
+                    <Link href={"/auth/reset-email"} className="custom-link">
                         Forget Password?
                     </Link>
                     <Button

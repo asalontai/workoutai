@@ -210,7 +210,7 @@ Band Exercises:
 {Barbell Reverse Wrist Curl Over Bench: /Barbell-reverse-wrist-curl-over-bench.png},
 {Barbell Rollout: /barbell-rollout-resized.webp},
 {Barbell Romanian Deadlift: /Barbell-Romanian-Deadlift.webp},
-{Dumbbell Romanian Deadlift: /Dumbbell Romanian Deadlift.webp}
+{Dumbbell Romanian Deadlift: /Dumbbell-Romanian-Deadlift.webp}
 {Barbell Seated Overhead Triceps Extension Resized: /Barbell-Seated-Overhead-Triceps-Extension-resized.png},
 {Barbell Shrug: /Barbell-Shrug-resized.png},
 {Barbell Side Lunge: /Barbell-Side-lunge-resized.webp},
@@ -394,7 +394,6 @@ Band Exercises:
 {Reverse Peck Deck Fly: rear-delt-fly-machine.webp}
 {Incline Barbell Bench Press: incline-barbell-bench-press-resized.png}
 {Incline Cable Bench Press: incline-cable-bench-press-resized.png}
-{Incline Dumbbell Bench Press: incline-dumbbell-bench-press-resized.webp}
 {Incline Dumbbell Curl: Incline-Dumbbell-Curl-resized.png}
 {Incline Dumbbell Fly: Incline-dumbbell-fly-resized.webp}
 {Incline Dumbbell Triceps Extension: Incline-dumbbell-triceps-extension-resized.webp}

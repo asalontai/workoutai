@@ -62,11 +62,11 @@ export default function Pricing() {
                 justifyContent={"center"}
                 alignItems={"center"}
             >
-                <Typography pb={2} width={200} variant={isMobile ? "h3" : "h2"} align="center" fontWeight={"bold"} mb={isMobile ? 5 : ""} sx={{ paddingBottom: "3px", borderBottom: "2px solid white" }}>
+                <Typography pb={2} width={200} variant={isMobile ? "h3" : "h2"} align="center" fontWeight={"bold"} mb={isMobile ? 5 : 6} sx={{ paddingBottom: "3px", borderBottom: "2px solid white" }}>
                     Pricing
                 </Typography>
                 <Grid container justifyContent={"center"} spacing={isMobile ? 7 : 20}>
-                <Grid item xs={10} md={4}>
+                <Grid item xs={9} md={6}>
                     <Box
                         sx={{
                             color: "black",
@@ -77,7 +77,7 @@ export default function Pricing() {
                             justifyContent: "center",
                             border: "1px solid",
                             boxShadow: "",
-                            height: "250px",
+                            height: isMobile ? "250px" : "300px",
                             borderRadius: 3,
                             boxShadow: "3px 3px 5px 1px rgb(255, 255, 255, 0.4)"
                         }}
@@ -105,7 +105,7 @@ export default function Pricing() {
                             </Button>
                         </Box>
                     </Grid>
-                    <Grid item xs={10} md={4}>
+                    <Grid item xs={9} md={6}>
                         <Box
                         sx={{
                             color: "black",

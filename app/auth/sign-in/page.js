@@ -201,7 +201,7 @@ export default function SignIn() {
         />
         <Box marginTop={"20px"} display={"flex"} justifyContent={"space-between"} alignItems={"center"} marginLeft={isMobile && "24px"} marginRight={isMobile && "24px"} 
           width={isMobile ? 'calc(100% - 48px)' : '400px'}>
-          <Link href={"/sign-up"} className="custom-link">
+          <Link href={"/auth/reset-email"} className="custom-link">
             Forget Password?
           </Link>
           <Button

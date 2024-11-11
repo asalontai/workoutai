@@ -128,7 +128,7 @@ const DashbaordLayout = ({ children }) => {
                                             borderRadius: "10px",
                                             mt: 4,
                                             ml: 1,
-                                            width: 115,
+                                            width: 130,
                                             p: 1,
                                             overflow: "hidden",
                                             color: "black",

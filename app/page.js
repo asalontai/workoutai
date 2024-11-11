@@ -133,8 +133,6 @@ export default function LandingPage() {
             sx={{
               bgcolor: "#2D2D2D",
               color: 'white',
-              ml: 48,
-              mr: "auto",
               mt: 2, 
               '&:hover': {
                 bgcolor: "#4B4B4B"

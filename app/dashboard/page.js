@@ -286,7 +286,7 @@ export default function Dashboard() {
                     </Box>
                   </Box>
                   {msg.role === 'user' && (
-                      <Image src={ session?.user.image || defaultProfile } width={40} height={40} alt='Chatbot Icon' style={{ borderRadius: '100%', marginLeft: "-14px", marginTop: 15, marginRight: isMobile ? 4 : 10, border: "2px solid black" }} />
+                      <Image src={ session?.user.image || defaultProfile } width={40} height={40} alt='User Icon' style={{ borderRadius: '100%', marginLeft: "-14px", marginTop: 15, marginRight: isMobile ? 4 : 10, border: "2px solid black" }} />
                   )}
                 </Box>
               ))
