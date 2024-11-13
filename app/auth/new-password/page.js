@@ -1,16 +1,20 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import { Box, Button, CircularProgress, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Button, CircularProgress, IconButton, InputAdornment, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import LandingPage from "../../../public/Auth Picture.webp";
 import Logo from "../../../public/Logo.png"
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const PasswordChangeContent = () => {
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [disable, setDisable] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [processing, setProcessing] = useState(false);
@@ -25,10 +29,12 @@ const PasswordChangeContent = () => {
     setError("");
     setSuccess("");
     setProcessing(true);
+    setDisable(true);
 
     if (!password || !confirmPassword) {
       setError("All fields are required.");
       setProcessing(false);
+      setDisable(false);
       return;
     }
 
@@ -36,12 +42,14 @@ const PasswordChangeContent = () => {
     if (!passwordRegex.test(password)) {
         setError("Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.");
         setProcessing(false);
+        setDisable(false);
         return;
     }
 
     if (password !== confirmPassword) {
         setError("Passwords do not match");
         setProcessing(false);
+        setDisable(false);
         return;
     }
 
@@ -59,6 +67,7 @@ const PasswordChangeContent = () => {
       if (!response.ok) {
         setError(data.error.message);
         setProcessing(false);
+        setDisable(false);
         return;
       }
 
@@ -69,6 +78,7 @@ const PasswordChangeContent = () => {
       }, 2000);
     } catch (err) {
       setError(err.message);
+      setDisable(false);
     } finally {
       setProcessing(false);
     }
@@ -131,10 +141,24 @@ const PasswordChangeContent = () => {
         </Typography>
         <TextField
           label="Password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           variant="outlined"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
+                  sx={{ color: 'white' }}
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
           sx={{
             marginTop: "15px",
             marginLeft: isMobile && "16px",
@@ -167,10 +191,24 @@ const PasswordChangeContent = () => {
         />
         <TextField
           label="Confirm Password"
-          type="password"
+          type={showConfirmPassword ? "text" : "password"}
           variant="outlined"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  edge="end"
+                  sx={{ color: 'white' }}
+                >
+                  {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
           sx={{
             marginTop: "10px",
             marginLeft: isMobile && "16px",
@@ -224,7 +262,7 @@ const PasswordChangeContent = () => {
           marginTop: "5px"
         }} 
           variant="contained"
-          disabled={processing}
+          disabled={disable}
           onClick={handlePasswordChange}
         >
           {processing ? "Resetting Password..." : "Reset Password"}

@@ -5,7 +5,7 @@ import { hash } from "bcrypt";
 export async function POST(req) {
     try {
         const body = await req.json();
-        const { email, username, password } = body;
+        const { email, name, password } = body;
 
         const exisitingUserByEmail = await db.user.findUnique({
             where: { email: email }
@@ -20,6 +20,7 @@ export async function POST(req) {
         const newUser = await db.user.create({
             data: {
                 email,
+                name,
                 password: hashedPassword,
                 isCredential: true
             }

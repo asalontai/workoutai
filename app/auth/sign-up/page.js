@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { Box, Button, Divider, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Button, Divider, IconButton, InputAdornment, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import WorkoutAI from "@/public/WorkoutAI Logo.png"
@@ -10,12 +10,17 @@ import Image from "next/image";
 import LandingPage from "../../../public/Auth Picture.webp";
 import Logo from "../../../public/Logo.png"
 import { signIn } from "next-auth/react";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function SignUp() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [disable, setDisable] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
     const [processing, setProcessing] = useState(false);
     const theme = useTheme();
@@ -26,10 +31,12 @@ export default function SignUp() {
     const handleSignUp = async () => {
         setError("");
         setProcessing(true);
+        setDisable(true);
 
         if (!name || !email || !password || !confirmPassword) {
             setError("All fields are required.");
             setProcessing(false);
+            setDisable(false);
             return;
         } 
 
@@ -37,6 +44,7 @@ export default function SignUp() {
         if (!emailRegex.test(email)) {
             setError("Please enter a valid email address.");
             setProcessing(false);
+            setDisable(false);
             return;
         }
 
@@ -44,12 +52,14 @@ export default function SignUp() {
         if (!passwordRegex.test(password)) {
             setError("Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.");
             setProcessing(false);
+            setDisable(false);
             return;
         }
 
         if (password !== confirmPassword) {
             setError("Passwords do not match");
             setProcessing(false);
+            setDisable(false);
             return;
         }
 
@@ -67,18 +77,24 @@ export default function SignUp() {
             if (response.status === 409 || response.status === 500) {
                 setError(data.error.message);
                 setProcessing(false);
+                setDisable(false);
                 return;
             }
 
             if (response.ok) {
                 console.log("User signed up:", data.user);
-                router.push('/auth/sign-in');
+                setSuccess("User Registration Successful! You can log in!")
+                setTimeout(() => {
+                    router.push("/auth/sign-in");
+                }, 2000);
             } else {
                 setError(data.message);
+                setDisable(false);
             }
         } catch (error) {
             setError(error.message);
             console.log("Error signing up:", error.message);
+            setDisable(false);
         } finally {
             setProcessing(false);
         }
@@ -226,9 +242,23 @@ export default function SignUp() {
                 <TextField
                     label="Password"
                     variant="outlined"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={() => setShowPassword(!showPassword)}
+                              edge="end"
+                              sx={{ color: 'white' }}
+                            >
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
                     sx={{
                         marginTop: "10px",
                         marginLeft: isMobile && "16px",
@@ -262,9 +292,23 @@ export default function SignUp() {
                 <TextField
                     label="Confirm Password"
                     variant="outlined"
-                    type="password"
+                    type={showConfirmPassword ? "text" : "password"}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
+                    InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                              edge="end"
+                              sx={{ color: 'white' }}
+                            >
+                              {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
                     sx={{
                         marginTop: "10px",
                         marginLeft: isMobile && "16px",
@@ -307,7 +351,13 @@ export default function SignUp() {
                             '&:hover': {
                                 bgcolor: "#4B4B4B"
                             },
+                            '&.Mui-disabled': {
+                                bgcolor: "#5A5A5A", 
+                                color: "#A0A0A0",   
+                                cursor: 'not-allowed'
+                            },
                         }}
+                        disabled={disable}
                     >
                         {processing ? "Signing Up..." : "Sign Up"}
                     </Button>
@@ -353,16 +403,21 @@ export default function SignUp() {
                         <Typography mr={isMobile ? "auto" : 14} ml={isMobile ? "auto" : 0}>Sign in with Google</Typography>
                     </Box>
                 </Button>
-                <Box marginLeft={isMobile && "auto"} marginRight={isMobile && "auto"} width={isMobile ? '200px' : '400px'} display={"flex"} alignItems={"center"} gap={1} marginTop={"15px"} flexDirection={isMobile && "column"}>
-                    <Typography>Have an account?</Typography>
+                <Box marginLeft={isMobile && "auto"} marginRight={isMobile && "auto"} width={isMobile ? '200px' : '400px'} display={"flex"} alignItems={"center"} gap={1} marginTop={"15px"} flexDirection={isMobile && "column"} textAlign={"center"}>
+                    <Typography ml={"auto"}>Have an account?</Typography>
                     <Link href={"/auth/sign-in"} className="custom-link">
-                        Login with account
+                        Login with Account
                     </Link>
                 </Box>
                 <Box marginLeft={isMobile && "16px"} marginRight={isMobile && "16px"} width={isMobile ? 'calc(100% - 32px)' : '400px'} display={"flex"} justifyContent={"center"} alignItems={"center"} height="24px" marginTop={"10px"}>
                     {error && (
                         <Typography color="error">
                             {error}
+                        </Typography>
+                    )}
+                    {success && (
+                        <Typography color="success.main">
+                        {success}
                         </Typography>
                     )}
                 </Box>

@@ -10,6 +10,7 @@ import Logo from "../../../public/Logo.png"
 export default function EmailReset() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [disable, setDisable] = useState(false);
   const [success, setSuccess] = useState("");
   const [processing, setProcessing] = useState(false);
   const theme = useTheme();
@@ -19,10 +20,12 @@ export default function EmailReset() {
     setError("");
     setSuccess("");
     setProcessing(true);
+    setDisable(true)
 
     if (!email) {
       setError("Email is Required.");
       setProcessing(false);
+      setDisable(false)
       return;
     }
 
@@ -30,6 +33,7 @@ export default function EmailReset() {
     if (!emailRegex.test(email)) {
         setError("Please enter a valid email address.");
         setProcessing(false)
+        setDisable(false)
         return;
     }
 
@@ -47,11 +51,13 @@ export default function EmailReset() {
       if (!response.ok) {
         setError(data.error.message);
         setProcessing(false);
+        setDisable(false)
         return;
       }
       setSuccess("Reset email sent successfully. Please check your inbox.")
     } catch (err) {
       setError(err.message);
+      setDisable(false)
     } finally {
       setProcessing(false);
     }
@@ -172,7 +178,7 @@ export default function EmailReset() {
         }} 
           variant="contained"
           onClick={handleEmailReset}
-          disabled={processing}
+          disabled={disable}
         >
           {processing ? "Sending Reset Email..." : "Send Reset Email"}
         </Button>

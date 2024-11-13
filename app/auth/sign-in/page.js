@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getSession, signIn, signOut, useSession } from 'next-auth/react'
-import { Box, Button, Divider, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Button, Divider, IconButton, InputAdornment, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import WorkoutAI from "@/public/WorkoutAI Logo.png"
@@ -10,11 +10,14 @@ import GoogleIcon from "@/public/google-icon.svg";
 import Image from "next/image";
 import LandingPage from "../../../public/Auth Picture.webp";
 import Logo from "../../../public/Logo.png"
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function SignIn() {
-  const { data: session } = useSession()
   const [email, setEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
+  const [disable, setDisable] = useState(false);
+  const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const [processing, setProcessing] = useState(false);
   const theme = useTheme();
@@ -25,10 +28,12 @@ export default function SignIn() {
   const handleSignIn = async () => {
     setError("");
     setProcessing(true);
+    setDisable(true);
 
     if (!email || !password) {
       setError("All fields are required.");
       setProcessing(false);
+      setDisable(false);
       return;
     }
 
@@ -36,6 +41,7 @@ export default function SignIn() {
     if (!emailRegex.test(email)) {
         setError("Please enter a valid email address.");
         setProcessing(false)
+        setDisable(false);
         return;
     }
 
@@ -52,12 +58,19 @@ export default function SignIn() {
       console.log(signInData.error)
       if (signInData.error === "CredentialsSignin") {
         setError("Invalid email or password.");
+        setProcessing(false);
+        setDisable(false);
       } else {
         setError("An unexpected error occurred. Please try again.");
+        setProcessing(false);
+        setDisable(false);
       }
     } else {
-
-      router.push('/dashboard');
+      setSuccess("Log in Successful!")
+      setProcessing(false);
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 2000);
     }
   };
 
@@ -165,10 +178,24 @@ export default function SignIn() {
         />
         <TextField
           label="Password"
-          type="password"
+          type= {showPassword ? "text" : "password"}
           variant="outlined"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
+                  sx={{ color: 'white' }}
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
           sx={{
             marginTop: "10px",
             marginLeft: isMobile && "16px",
@@ -212,7 +239,13 @@ export default function SignIn() {
               '&:hover': {
                   bgcolor: "#4B4B4B"
               },
+              '&.Mui-disabled': {
+                bgcolor: "#5A5A5A", 
+                color: "#A0A0A0",   
+                cursor: 'not-allowed'
+              },
             }}
+            disabled={disable}
           >
             {processing ? "Signing In..." : "Sign In"}
           </Button>
@@ -260,7 +293,7 @@ export default function SignIn() {
         </Button>
         <Box marginLeft={isMobile && "auto"} marginRight={isMobile && "auto"} 
           width={isMobile ? '200px' : '400px'} display={"flex"} alignItems={"center"} gap={1} marginTop={"15px"} flexDirection={isMobile && "column"}>
-          <Typography>Don&apos;t have an account?</Typography>
+          <Typography ml={"auto"}>Don&apos;t have an account?</Typography>
           <Link href={"/auth/sign-up"} className="custom-link">
             Create an account
           </Link>
@@ -271,6 +304,11 @@ export default function SignIn() {
             <Typography color="error">
               {error}
             </Typography>
+          )}
+          {success && (
+              <Typography color="success.main">
+              {success}
+              </Typography>
           )}
         </Box>
       </Box>
